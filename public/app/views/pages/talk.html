@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="panel panel-info">
+    <div class="panel-heading">{{talk.status.username}} {{talk.status.title}} Total Like: {{talk.status.totallike}} Total View:{{talk.status.statusview}} Total Answer: {{talk.status.totalcomment}} Date: {{talk.status.date}}</div>
+
+    <div>
+      <button ng-show="talk.enabledEdit" class="btn btn-info" type="submit"><a href="/updatetalk/{{talk.status._id}}">Update?</a></button>
+    </div>
+    <div>
+      <button ng-show="talk.enabledEdit" type="button" class="btn btn-danger" ng-click="talk.deleteTalk()">Delete?</button>
+    </div>
+    <div>
+      <button  type="button" class="btn btn-success" ng-click="talk.likeClick()">{{talk.likeSymbol}} {{talk.totallike}}</button>
+    </div>
+    <div>
+      <a href="#"
+      socialshare
+      socialshare-provider="facebook"
+      socialshare-text="720kb AngularJS Socialshare"
+      socialshare-hashtags="angularjs, angular-socialshare"
+      socialshare-url="https://www.google.co.th/?gws_rd=cr&dcr=0&ei=2GwWWpHQCcqDvQTA37XQBQ">
+      <button type="button" class="btn btn-primary">Share</button>
+      </a>
+    </div>
+    <!-- <div>
+      <button  type="button" class="btn btn-success" if-btn-not-active ng-click="talk.likeTalk(false)">Like?</button>  ng-init="liked='Like'; likeCount=0"
+    </div>
+    <div>
+      <button  type="button" class="btn btn-success" if-btn-active ng-click="talk.likeTalk(true)">Dislike?</button>
+    </div> -->
+
+    <div class="panel-body">
+      {{talk.status.content}}
+    </div>
+    <div class="panel-body" ng-repeat="tag in talk.status.tags">
+      {{tag}}
+    </div>
+  </div>
+
+  <form class="nino-subscribeForm" ng-submit = "talk.postComment(commentData)" novalidate>
+      <div class="input-group input-group-lg">
+          <input type="text" class="form-control" name="comment" placeholder="What's on your mind.." ng-model = talk.commentData.comment>
+          <span class="input-group-btn">
+            <button class="show-button btn btn-info" notification-text="talk.text" notification-title="talk.commentData.comment" type="submit">Comment</button>
+          </span>
+      </div>
+  </form>
+
+  <!-- <form class="form-inline" ng-submit = "talk.postComment(commentData)" novalidate>
+     <div class="form-group">
+       <label>Comment</label>
+       <input type="text" name="comment" class="form-control" ng-model = talk.commentData.comment >
+     </div>
+     <button type="submit" class="btn btn-default">Comment</button>
+  </form> -->
+
+  <div class="row show-hide-message" ng-show="talk.successMsg">
+      <div class="alert alert-success">
+          {{talk.successMsg}}
+      </div>
+  </div>
+
+  <div class="row show-hide-message" ng-show="talk.errorMsg">
+      <div class="alert alert-danger">
+          {{talk.errorMsg}}
+      </div>
+  </div>
+
+  <div><h2>This is the comment of this status</h2></div>
+  <div class="panel-group" ng-repeat = "comment in talk.allComments track by $index"> //ng reapeat and check condition is acooment of other who else to show delete button
+      <div class="panel panel-default">
+        <div class="panel-heading">{{comment.username}}</div>
+        <div class="panel-body">{{comment.comment}}</div>
+        <div>
+          <!-- <button ng-show="talk.freshcomment" class="btn btn-primary" type="button" ng-click="talk.clickVoteComment(comment._id)">{{talk.voteSymbol}} {{talk.totalvote}}</button> -->
+          <!-- <button ng-repeat = "vote in talk.arrVote" ng-show="vote.commentid===comment._id" class="btn btn-primary" type="button" ng-click="talk.clickVoteComment(comment._id)">{{comment.vote}} {{talk.voteSymbol}} {{talk.totalvote}}</button> -->
+          <button class="btn btn-primary" type="submit" ng-click="talk.clickVoteComment(comment._id)">{{comment.vote}} {{talk.voteSymbol}} {{talk.totalvote}}</button>
+        </div>
+        <div>
+          <button ng-show="comment.username===talk.userDecode" class="btn btn-danger" type="submit" ng-click="talk.deleteCommnet(comment._id)">Delete?</button>
+        </div>
+        <div>
+          <button ng-show="comment.username===talk.userDecode" class="btn btn-info" type="submit" ng-click="talk.updateCommnet(comment._id)">Update</button>
+        </div>
+      </div>
+  </div>
+</div>

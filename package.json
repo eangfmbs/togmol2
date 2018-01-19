@@ -1,0 +1,51 @@
+{
+  "name": "togmol",
+  "version": "1.0.0",
+  "description": "togmol web-application is build by Eangfmbs for Cambodian people to be in one table",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eangfmbs/togmol.git"
+  },
+  "keywords": [
+    "togmol",
+    "kit",
+    "cambodia"
+  ],
+  "author": "Eangfmbs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eangfmbs/togmol/issues"
+  },
+  "homepage": "https://github.com/eangfmbs/togmol#readme",
+  "dependencies": {
+    "@angular/cdk": "^5.0.0-rc.1",
+    "@angular/material": "^5.0.0-rc.1",
+    "angular-socialshare": "^2.3.11",
+    "angular-web-notification": "^1.2.26",
+    "async": "^2.6.0",
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "cloudinary": "^1.9.1",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "jsonwebtoken": "^8.1.0",
+    "mongoose": "^4.12.5",
+    "mongoose-title-case": "0.0.4",
+    "mongoose-validator": "^1.3.2",
+    "morgan": "^1.9.0",
+    "nodemailer": "^4.3.1",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "nodemon": "^1.12.1",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "quill": "^1.3.4",
+    "stylelint": "^8.2.0"
+  }
+}

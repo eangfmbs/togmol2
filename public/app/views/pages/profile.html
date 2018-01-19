@@ -1,0 +1,126 @@
+<div class="container">
+  	<div class="row">
+  		<div class="col-lg-3 col-sm-6">
+
+              <div class="card hovercard">
+                  <div class="cardheader">
+
+                  </div>
+                  <div class="avatar">
+                      <!-- <img alt="" src="https://lh3.googleusercontent.com/-7u4lQZKPLao/AAAAAAAAAAI/AAAAAAAAZVw/5Caf-jo14f4/photo.jpg?sz=328"> -->
+<!-- profile image -->
+                  <!-- drop box -->
+          <div ng-show="!uploadPhoto && !profile.photo && !loading"
+            class="drop-box drop-box-container"
+            ngf-drag-over-class="drop-box-dragover"
+            ngf-change="readFileImg($files)" ngf-drop=""
+            ngf-select="" ng-model="files"
+            ngf-multiple="false"
+            ngf-allow-dir="false"
+            accept="image/*" ng-cloak="">
+            <span>Drop image or click to upload profile photo</span>
+          </div>
+
+          <!-- current user photo -->
+          <div class="photo-shadow" ng-show="photo" ng-cloak="">
+            <img class="photo-img"
+              ng-src="{{croppedPhoto}}">
+          </div>
+
+          <!--progress-->
+          <div class="drop-box-container" ng-show="loading" ng-cloak="">
+            <div class="wrap">
+              <md-progress-circular class="md-hue-2" ng-show="!loading" md-mode="indeterminate" style="margin: auto;">
+              </md-progress-circular>
+            </div>
+          </div>
+          <!--Img Crop-->
+        <img-crop ng-show="uploadPhoto && !loading && !profile.photo" image="uploadPhoto"
+          result-image="croppedPhoto"
+          area-type="square" ngf-accept="'image/*'" result-image-size="250"
+          class="drop-box-container" ng-cloak="">
+        </img-crop>
+        <!--Save-->
+        <md-button ng-show="uploadPhoto && !loading && !profile.photo"
+          ng-disabled="loading" ng-click="upload()"
+          class="md-raised submit-button md-accent button-center block"
+          ng-cloak="">Save Photo</md-button>
+        <!--Reset-->
+        <md-button ng-show="photo && loading"
+          ngf-select="" ngf-change="readFileImg($files)"
+          ngf-select="" ng-model="files"
+          ngf-multiple="false"
+          ngf-allow-dir="false"
+          accept="image/*" ng-cloak=""
+          class="md-flat submit-button button-center"
+          ng-cloak="">Change Photo</md-button>
+
+<!--end profile -->
+
+                  </div><br />
+                  <div class="info">
+                      <div class="title">
+                          <a target="_blank" href="http://scripteden.com/">eangfmbs</a>
+                      </div>
+                      <div class="desc">Passionate designer</div>
+                      <div class="desc">Curious developer</div>
+                      <div class="desc">Tech geek</div>
+                  </div>
+                  <div class="bottom">
+                      <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
+                          <i class="fa fa-twitter"></i>
+                      </a>
+                      <a class="btn btn-danger btn-sm" rel="publisher"
+                         href="https://plus.google.com/+ahmshahnuralam">
+                          <i class="fa fa-google-plus"></i>
+                      </a>
+                      <a class="btn btn-primary btn-sm" rel="publisher"
+                         href="https://plus.google.com/shahnuralam">
+                          <i class="fa fa-facebook"></i>
+                      </a>
+                      <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                          <i class="fa fa-behance"></i>
+                      </a>
+                  </div>
+              </div>
+
+          </div>
+          <div class="col-lg-9 col-sm-6">
+            <div>Hello. This is Home of {{main.username}}</div>
+            <div class="panel-group" ng-repeat = "status in profile.allStatus">
+                <div class="panel panel-default">
+                  <div class="panel-heading"><a href="/talk/{{status._id}}">{{status.date}} total view: {{status.statusview}} total like: {{status.totallike}} total answer: {{status.totalcomment}} {{status.username}} {{status.title}}</a></div>
+                  <div class="panel-body">{{status.content}}</div>
+                  <div ng-repeat = "tag in status.tags">{{tag}}</div>
+                </div>
+            </div>
+            <div class="row show-hide-message" ng-show="profile.errorMsg">
+                <div class="alert alert-danger">
+                    {{profile.errorMsg}}
+                </div>
+            </div>
+          </div>
+
+  	</div>
+
+
+
+    <!-- <div>Select an image file: <input type="file" id="fileInput" /></div>
+    <div class="cropArea">
+      <img-crop image="myImage"
+       result-image="myCroppedImage">
+     </img-crop> -->
+
+     <!-- <img-crop
+       //ng-show="uploadPhoto && !loading && !user.photo"
+       image="uploadPhoto"
+       result-image="croppedPhoto"
+       area-type="square"
+       ngf-accept="'image/*'"
+       result-image-size="250"
+       class="drop-box-container"
+       ng-cloak=""></img-crop> -->
+
+    <!-- </div> -->
+    <!-- <div>Cropped Image:</div> -->
+    <!-- <div><img data-ng-src="{{croppedPhoto}}" /></div> -->

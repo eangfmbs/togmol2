@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="page-header">Login Form</div>
+    <form ng-submit="main.doLogin(loginData)">
+
+                <label>Username</label>
+                <input class="form-control" ng-disabled="main.disabled || facebook.disabled" type="text" name="username" ng-model="main.loginData.username">
+                <label>Password</label>
+                <td><input class="form-control" ng-disabled="main.disabled || facebook.disabled" type="password" name="pwd" ng-model="main.loginData.password"> </td>
+                <br /><button ng-disabled="main.disabled || facebook.disabled" class="btn btn-primary" type="submit" name="login">login</button>
+                <br /><button ng-disabled="main.disabled || facebook.disabled" class="btn btn-primary" ng-click = "main.facebook()" type="button">Login with facebook</button>
+
+        <a href="/forgetpassword"><button  class="btn btn-danger" type="submit" name="login">forget password</button></a>
+        <a href="/forgetusername"><button  class="btn btn-primary" type="submit" name="login">forget username</button></a>
+    </form>
+    <div class="jumbotron text-center" ng-show="main.loading">
+        <span class="glyphicon glyphicon-repeat spinner"></span>
+        <p>Loading...</p>
+    </div>
+    <div class="row show-hide-message" ng-show="main.errorMsg">
+        <div class="alert alert-danger">
+            {{main.errorMsg}} &nbsp; <a href="/resend" ng-show="main.expired"><button type="button" class="btn btn-primary">Resend for activation link </button></a>
+        </div>
+    </div>
+    <div class="row show-hide-message" ng-show="facebook.errorMsg">
+        <div class="alert alert-danger">
+            {{facebook.errorMsg}}&nbsp; <a href="/resend" ng-show="facebook.expired"><button type="button" class="btn btn-primary">Resend for activation link </button></a>
+        </div>
+    </div>
+    <!--<div>-->
+        <!--<input type="text" name="mainpassword" ng-model="mainpassword"><br><br>-->
+        <!--<input type="text" name="confirm" ng-model="confirmmainpassword" match="{{[mainpassword]}}">-->
+        <!--<p ng-show="!confirmed">password doesn't match</p>-->
+    <!--</div>-->
+</div>
