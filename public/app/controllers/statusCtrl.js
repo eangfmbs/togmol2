@@ -140,11 +140,44 @@ angular.module('statusController',['userServices','authServices'])
         app.errorMsg = data.data.message;
       }
     })
-
-
-
-
   }
+
+
+
+
+
+  // .controller('AppCtrl', ['$scope','$timeout', function ($scope, $timeout) {
+                $scope.content = 'Quill works'
+                $scope.model = ''
+                $scope.readOnly = false
+                $scope.test = ''
+                $scope.customOptions = [{
+                  import: 'attributors/style/size',
+                  whitelist: ['14', '16', '18', 'small', 'large', 'huge']
+                }]
+                $scope.customModules = {
+                  toolbar: [
+                    [{'size': [false, '14', '16', '18']}]
+                  ]
+                }
+                $timeout(function () {
+                  $scope.content += ' awsome!!!'
+                }, 0)
+                $scope.editorCreated = function (editor) {
+                  console.log('editorCreated:',editor)
+                }
+                $scope.contentChanged = function (editor, html, text, delta, oldDelta, source) {
+                  // console.log('contentChanged: ', editor, 'html: ', html, 'text:', text, 'delta: ', delta, 'oldDelta:', oldDelta, 'source:', source)
+                }
+                $scope.selectionChanged = function (editor, range, oldRange, source) {
+                  // console.log('selectionChanged: ', editor, 'range: ', range, 'oldRange:', oldRange, 'source:', source)
+                }
+            //   }
+            // ])
+
+
+
+
 
 
 })

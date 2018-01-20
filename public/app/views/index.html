@@ -36,6 +36,24 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/angular-material.css" />
     <link rel="stylesheet" type="text/css" href="/ng-img-crop/compile/unminified/ng-img-crop.css" />
     <link rel="stylesheet" type="text/css" href="/assets/js/ng-tags-input/ng-tags-input.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.4/quill.snow.css" />
+    <!-- <link rel="stylesheet" href="/quill/assets/snow/quill-snow.css" /> -->
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.4/quill.bubble.css" /> -->
+    <style>
+            ng-quill-editor.ng-invalid .ql-container {
+                border: 1px dashed red;
+            }
+            .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14"]::before {
+                content: '14';
+            }
+            .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16"]::before {
+                content: '16';
+            }
+            .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18"]::before {
+                content: '18';
+            }
+        </style>
 
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
 
@@ -60,6 +78,13 @@
     <!-- this angular is for notification -->
     <script type="text/javascript" src="https://rawgit.com/sagiegurari/simple-web-notification/master/web-notification.js"></script>
     <script type="text/javascript" src="https://rawgit.com/sagiegurari/angular-web-notification/master/angular-web-notification.js"></script>
+    <!-- text editor -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.4/quill.js"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ng-quill/3.5.1/ng-quill.js"></script> -->
+    <script type="text/javascript" src="/ngQuill/src/ng-quill.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-sanitize.js"></script>
+    <!-- end editor -->
+
     <!--angular configuration/routes-->
     <script src="/app/app.js"></script>
     <script src="/app/route.js"></script>
@@ -192,6 +217,11 @@
 ================================================== -->
 <section class="nino-testimonial">
     <div class="container">
+
+
+
+
+
         <div class="nino-testimonialSlider">
             <ul>
                 <li>

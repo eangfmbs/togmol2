@@ -5,10 +5,21 @@
       <label for="usr">Title:</label>
       <input type="text" class="form-control" name="title" ng-model="ask.askData.title">
     </div>
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label for="comment">Content:</label>
       <textarea class="form-control" rows="5" name="content" ng-model="ask.askData.content"></textarea>
-    </div>
+    </div> -->
+
+
+    <h3>Default editor + Callbacks/Outputs in JS console</h3>
+            <pre><code>{{content}}</code></pre>
+            <ng-quill-editor ng-model="ask.askData.content"
+             placeholder="ផ្តល់ពត៍មានលម្អិតបន្ថែមដើម្បីបានចម្លើយរឹតតែច្បាស់"
+             on-editor-created="editorCreated(editor)"
+             on-content-changed="contentChanged(editor, html, text)"
+             on-selection-changed="selectionChanged(editor, range, oldRange, source)">
+            </ng-quill-editor>
+
     <br><button  class="btn btn-primary" type="submit">Post</button>
     <!-- <tags-input ng-model="tags"></tags-input> -->
 
