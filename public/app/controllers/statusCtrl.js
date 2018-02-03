@@ -317,7 +317,7 @@ $scope.upload = function () {
 //         'socialshareUrl': 'http://720kb.net'
 //       }
 //     })
-.controller('talkCtrl', function(User, $scope, $timeout, $location, $routeParams){
+.controller('talkCtrl', function(User, Socket, $scope, $timeout, $location, $routeParams){
   var app = this;
   app.title = "Hello Eang";
   app.text = "Some content goes here!";
@@ -326,7 +326,9 @@ $scope.upload = function () {
     if(data.data.success){
       app.enabledEdit = data.data.enabledEdit;
       app.status = data.data.talk;
+      $scope.ownercontent = data.data.talk.username;
       console.log('this talk view is: ', data.data.views)
+      console.log('this talk status is: ', $scope.ownercontent)
       app.totallike = data.data.like;
       //check for comment vote when start up the page
         User.checkLike($routeParams.id).then(function(data){//check fo get initial value of like or unlike
@@ -346,6 +348,15 @@ $scope.upload = function () {
       app.errorMsg = data.data.message;
     }
   });
+  //handle with socket data from the server automatically
+
+  // Socket.emit('notify', {});
+  // Socket.on('notification', function(data){
+  //   console.log('this is : ', data.notification);
+  // })
+
+
+
 
   app.postComment = function(commentData){
     var objectComment = $routeParams.id;
@@ -353,7 +364,22 @@ $scope.upload = function () {
       if(data.data.success){
         console.log('this comment Data: ', data.data)
         loadComment();
-      } else {
+
+
+        Socket.emit("add-user", {"username": data.data.commentor});
+
+
+        var objectNTF = {};
+        objectNTF.guesttext = 'guesttext';
+        objectNTF.ownercontent = $scope.ownercontent;
+        console.log('ownercontent', $scope.ownercontent)
+        User.notficationAlert(objectNTF).then(function(data){
+          if(data.data.success){
+            console.log('notficationAlert save!')
+          }
+        })
+      }
+       else {
         app.errorMsg = data.data.message;
       }
     })

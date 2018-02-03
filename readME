@@ -10,3 +10,67 @@ https://stackoverflow.com/questions/45853418/how-to-use-long-polling-in-native-j
 Cloud name:	kit
 API Key:	361569255921837
 API Secret:	NLdL6ncWMLRIzsvYSOKcQwnyyJU
+
+
+<script src="/ng-img-crop/compile/unminified/ng-img-crop.js"></script>
+<script src="/ng-file-upload/ng-file-upload.js"></script>
+<script src="/assets/js/angular-material.js"></script>
+<script src="/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
+<script src="/assets/js/angular-aria.js"></script>
+<!--angular library-->
+<script src="/assets/js/angular-animate.js"></script>
+<script src="/assets/js/angular-route.js"></script>
+<!-- angular form Tag -->
+<script src="/assets/js/angular-ui-select/dist/select.js"></script>
+<link rel="stylesheet" href="/assets/js/angular-ui-select/dist/select.css">
+<script src="/assets/js/angular-ui-select/docs/assets/demo.js"></script>
+<!-- this angular is for notification -->
+<script type="text/javascript" src="https://rawgit.com/sagiegurari/simple-web-notification/master/web-notification.js"></script>
+<script type="text/javascript" src="https://rawgit.com/sagiegurari/angular-web-notification/master/angular-web-notification.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+// realtime socket notification: https://hackernoon.com/build-real-time-app-with-mean2-angular-cli-and-socket-io-cedf1dc02fec
+https://www.quora.com/What-is-the-best-approach-to-send-notifications-to-specific-users-only-using-Socket-IO-in-the-MEAN-stack
+https://www.quora.com/What%E2%80%99s-the-best-way-to-implement-a-real-time-notification-system-in-a-web-application-using-node-and-MongoDB
+https://codeforgeek.com/2015/09/real-time-notification-system-using-socket-io/
+https://stackoverflow.com/questions/38814307/how-to-send-notifications-in-mean-stack-app-using-socket-io-from-different-modul
+https://michaelheap.com/sending-messages-to-certain-clients-with-socket-io/
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- text editor -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.4/quill.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ng-quill/3.5.1/ng-quill.js"></script> -->
+<script type="text/javascript" src="/ngQuill/src/ng-quill.js"></script>
+<script type="text/javascript" src="/assets/js/angular-sanitize.js"></script> //use for convert text from string in db to html form as we save that html form and use with ng-bind-html
+
+
+**************$routeChangeStart in mainCtrl could be the reason that make home still can view will logout
+
+https://stackoverflow.com/questions/46968535/angularjs-notification-like-facebook
+https://stackoverflow.com/questions/14997828/develop-database-schema-for-notify-like-facebook
+https://stackoverflow.com/questions/33375685/how-to-broadcast-and-get-notification-using-express-angularjs-socket-io
+https://stackoverflow.com/questions/4647348/send-message-to-specific-client-with-socket-io-and-node-js/38525214#38525214
+https://stackoverflow.com/questions/22527753/stackoverflow-linkedin-like-notification-when-there-is-new-activity
+https://www.youtube.com/watch?v=IvagmRhTG4w //some idea about notification
+https://r2---sn-0opoxuui5pa5oq-c336.googlevideo.com/videoplayback?sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cexpire&mime=video%2Fmp4&key=yt6&ipbits=0&expire=1517095509&dur=1663.686&lmt=1472441700737174&pl=22&ei=9bVsWv2KGsi5ogOG3LqYDw&ip=202.28.78.18&source=youtube&itag=22&ms=au&signature=0E3195F623ECD169CC1DD2844A1EEA985C2F3725.A49C03FDE64384BDE8ED5DF3E16508397A2900F8&ratebypass=yes&mt=1517073783&mv=m&id=o-AMLTossIip7jnIAT1M4SDMAd6oxWegjf8oH8p81D-j55&requiressl=yes&mm=31&mn=sn-0opoxuui5pa5oq-c336&initcwndbps=858750 //notification

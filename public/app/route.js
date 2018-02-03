@@ -1,7 +1,7 @@
 var app = angular.module('appRoutes', ['ngRoute'])
 .config(function ($routeProvider, $locationProvider) {
     $routeProvider
-        .when('/', {
+        .when('/', { //maybe i need to put token here too to know what is this account belongs
             templateUrl: '/app/views/pages/home.html',
             controller: 'mainCtrl',
             controllerAs: 'main'

@@ -3,7 +3,7 @@ var Status      = require('../models/status');
 var Comment     = require('../models/comment');
 var Vote        = require('../models/vote');
 var Like        = require('../models/like');
-var Tag         = require('../models/tag');
+var NTF         = require('../models/notification');
 var TagType     = require('../models/tagtype');
 var imageHelper = require('../imagehelper/imagehelper');
 var jwt         = require('jsonwebtoken');
@@ -18,10 +18,48 @@ var countView    = 0;
 var currentView  = 0;
 var countVote    = 0;
 var currentVote  = 0;
+var isocket;
+var clients = {};
 // to family and friend i would give what i have. to person i love i would give what don't have it
 
 //create new user route (http://localhost:8080/api/users)
-module.exports = function (router) {
+module.exports = function (router, io) {
+
+    io.on('connection', function(socket) {
+        isocket = socket;
+
+        // clients.push(socket.id);
+        socket.on('add-user', function(data){
+          console.log('connection user: ', data.username)
+
+        clients[data.username] = {
+          "socket": socket.id
+        };
+        console.log('data of connection user: ', clients)
+      });
+
+
+    socket.on('disconnect', function() {
+    	for(var name in clients) {
+    		if(clients[name].socket === socket.id) {
+    			delete clients[name];
+    			break;
+    		}
+    	}
+    })
+        //
+        // let token = socket.handshake.query.token;
+        // global.activeSocketUser[token] = socket;
+        // socket.emit('notification', "comment")
+        // console.log("what is global: ", global.activeSocketUser[token]);
+        // socket.on('disconnect', function(){
+        //   let token = socket.handshake.query.token;
+        //   global.activeSocketUser[token] = null;
+        // })
+
+
+  // console.log('route is:', router)
+
 
     //email configuration
     var options = {
@@ -715,7 +753,7 @@ module.exports = function (router) {
           return res.json({success: false, message: "Your token is expired please login again to see!"})
         }
         return res.json({success: true, status: status})
-      })
+      }).sort({'_id': -1})
     })
 
     //get Status for owner profile user
@@ -782,6 +820,7 @@ module.exports = function (router) {
               //   console.log("what is count object: ", count)
               //   console.log("what is total comment now: ", count.totalcomment);
               // }
+
             })
           }
         })
@@ -789,7 +828,16 @@ module.exports = function (router) {
           if(err){
             return handleError(err);
           }
-          return res.json({success: true, message: 'You post a comment!', numberOfComment: countComment});
+//data socket test
+          console.log('socket in route!', socket.id);
+          isocket.broadcast.emit('notification',{ notification: req.body.comment });
+          // isocket.broadcast.to('y_oqXlAWP8Rc96JKAAAE').emit('notification', { notification: req.body.comment });
+          // socket.on('notification', function(){})
+          // socket.emit('notification',{ notification: req.body.comment });
+          console.log('the ::::', req.body.comment)
+
+          //end socket test
+          return res.json({success: true, commentor:comment.username, message: 'You post a comment!', numberOfComment: countComment});
         })
       }
     })
@@ -1111,6 +1159,27 @@ router.post('/updateProfilePhoto', function(req, res){
 //     }
 //   })
 // })
+
+router.post('/createnotification', function(req,res){//
+  var ntf = new NTF();
+  ntf.username = req.body.ownercontent;
+  ntf.ntftext = req.body.guesttext;
+  // ntf.toke  = req.body.token
+  // ntf.username = req.body.username
+  console.log('yal0000000000000000000: ',req.body.ownercontent)
+  ntf.save(function(err){
+    if(err){
+      return handleError(err);
+    } else {
+      // this.sendRealTimeNotification(); //or
+      // return global.activeSocketUser[token].emit('notification', notification);
+      return res.json({success: true})
+    }
+  })
+
+})
+
+})// end of socketio
 
     return router;
 };

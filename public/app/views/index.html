@@ -84,6 +84,9 @@
     <script type="text/javascript" src="/ngQuill/src/ng-quill.js"></script>
     <script type="text/javascript" src="/assets/js/angular-sanitize.js"></script>
     <!-- end editor -->
+    <!-- soket.io -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script type="text/javascript" src="/angular-socket-io/socket.js"></script>
 
     <!--angular configuration/routes-->
     <script src="/app/app.js"></script>
@@ -110,7 +113,16 @@
 <body data-target="#nino-navbar" data-spy="scroll" ng-app="userApp" ng-controller="mainCtrl as main" ng-show="main.loadingContent" ng-cloak>
   <!-- Social share controller -->
   <script src="/assets/js/angular-socialshare.js"></script>
-
+<script>
+const socketNTF = io(window.location.origin,{
+  query: {
+      token: localStorage.getItem('token'||'')
+    }
+});
+socketNTF.on('notification', function(notification){
+  console.log("notification is", notification)
+})
+</script>
 <!-- Header
 ================================================== -->
 <header id="nino-header">

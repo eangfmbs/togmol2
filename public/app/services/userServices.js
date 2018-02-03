@@ -172,7 +172,15 @@ angular.module('userServices',[])
             }
       }
     );
-    };
+  };
+
+  //User.createnotification(data)
+  userFactory.notficationAlert = function(ownercontent){
+    return $http.post('/api/createnotification', ownercontent);
+  }
 
     return userFactory;
+})
+.factory('Socket', function (socketFactory) {
+return socketFactory();
 });

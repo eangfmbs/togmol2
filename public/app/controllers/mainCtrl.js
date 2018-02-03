@@ -89,6 +89,7 @@ angular.module('mainControllers', ['authServices'])
         Auth.login(this.loginData)
             .then(function (data) {
                 if(data.data.success){
+                  console.log('this is user data: ', data.data)
                     app.loading = false;
                     // app.checkSession(); //check for session start when user login. token or session just the same way
                     app.successMsg = data.data.message+' ... Redirecting to home page';
