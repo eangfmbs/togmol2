@@ -7,13 +7,32 @@ var Schema = mongoose.Schema;
 var statusSchema = new Schema({
   title: {type: String, required: true},
   content: {type: String, required: false},
+  url: {type: String, required: true, default: 'https://togmol.com'},
   tags: [
     {type: String, required: false}
   ],
   // tags: [{
-  //   tag: {type: String, required: true}
+  //   tag: {type: String, required: true} //to show that just the same to above code
   // }
   // ],
+  comments: [
+    {
+      comment: {type: String, required: false},
+      commentator: {type: String, required: true},
+      date: {type: Date, required: true, default: Date.now},
+      vote: {type: Number, required: false, default: 0},
+      voteby: {type: Array, required: false},
+      replies: [
+        {
+          comment: {type: String, required: false},
+          commentator: {type: String, required: false},
+          date: {type: Date, required: true, default: Date.now},
+          vote: {type: Number, required: false, default: 0},
+          voteby: {type: Array, required: false}
+        }
+      ]
+    }
+  ],
   totallike: {type: Number, required: false, default: 0},
   statusview: {type: Number, required: false, default: 0},
   totalcomment: {type: Number, required: false, default: 0},

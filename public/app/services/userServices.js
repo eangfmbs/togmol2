@@ -117,14 +117,19 @@ angular.module('userServices',[])
       return $http.delete('/api/deletetalk/'+id);
     };
     //User.deleteComment
-    userFactory.deleteComment = function(objectCmt){
+    // userFactory.deleteComment = function(objectCmt){
+    //   console.log("This is the object of ID Coment: ", objectCmt._id)
+    //   return $http.delete('/api/deleteCommnet/'+objectCmt);
+    // };
+    //User.deleteComment
+    userFactory.removeMainComment = function(objectCmt){
       console.log("This is the object of ID Coment: ", objectCmt._id)
-      return $http.delete('/api/deleteCommnet/'+objectCmt);
+      return $http.put('/api/removemaincomment', objectCmt);
     }
     //User.getComment()
     userFactory.getComment = function(){
       return $http.get('/api/getCommntToUpdate');
-    }
+    };
     //User.updateComment
     userFactory.updateComment = function(){
       return $http.put('/api/updateCommnent');
@@ -146,17 +151,21 @@ angular.module('userServices',[])
 
     //this is the part of vote
     //User.checkLikeComment
-    userFactory.checkVoteComment = function(id){
-      return $http.get('api/checkifvotecomment/'+id);
-    };
+    // userFactory.checkVoteComment = function(id){
+    //   return $http.get('/api/checkifvotecomment/'+id);
+    // };
     //User.likeTalkComment(commentid)
-    userFactory.voteTalkComment = function(voteTalkComment){
-      return $http.post('/api/peoplevotetalkcomment' ,voteTalkComment);
-    };
+    // userFactory.voteTalkComment = function(voteTalkComment){
+    //   return $http.post('/api/peoplevotetalkcomment' ,voteTalkComment);
+    // };
     //User.unlikeTalkComment(commentid)
-    userFactory.unvoteTalkComment = function(id){
-      return $http.delete('/api/peopleunvotetalkcomment/'+id);
-    };
+    // userFactory.unvoteTalkComment = function(id){
+    //   return $http.delete('/api/peopleunvotetalkcomment/'+id);
+    // };
+    //User.votemaincomment(id)
+    userFactory.voteMainComment = function(object4Vote){
+      return $http.put('/api/votemaincomment', object4Vote)
+    }
     //User.updateProfilePhoto(imageCrop)
     userFactory.updateProfilePhoto = function(croppedPhoto){
       var fd = new FormData();

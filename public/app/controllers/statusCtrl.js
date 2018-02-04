@@ -393,27 +393,18 @@ $scope.upload = function () {
       if(data.data.success){
         app.allvotes = data.data.votes;
         app.allComments = data.data.comments;
+        app.sign = data.data.sign;
+        console.log('the sing: ', app.sign)
+        console.log('the all comment are: ', app.allComments)
         app.userDecode = data.data.ownuserandcmm;
-        app.allComments.forEach(function(comment){
-          app.allvotes.forEach(function(vote){
-            if(vote.username === app.userDecode && vote.commentid === comment._id){
-              app.arrVote.push(vote);
-              app.voteSymbol = "Unvote";
-              // console.log("Vote in foreach Data that has the same decoded of eangfmbs: ", app.arrVote)
-            }
-            // if(vote._id !==app.arrUnvote._id){
-            //   app.arrUnvote.push(vote);
-            //   app.voteSymbol = "Unvote";
-            // }
-          })
-        })
-        console.log("Vote in foreach Data that has the same decoded of eangfmbs: ", app.arrVote)
-        // console.log("Vote in foreach Data that has'nt the same decoded: ", app.arrUnvote)
-
-        // app.voteSymbol = "Vote";
-        console.log("This is Symbol: ", app.voteSymbol)
-        console.log("Comment Data: ", app.allComments)
-        console.log("Vote Data: ", app.allvotes)
+        // app.allComments.forEach(function(comment){
+        //   app.allvotes.forEach(function(vote){
+        //     if(vote.username === app.userDecode && vote.commentid === comment._id){
+        //       app.arrVote.push(vote);
+        //       app.voteSymbol = "Unvote";
+        //     }
+        //   })
+        // })
       }
     })
   }
@@ -446,14 +437,15 @@ $scope.upload = function () {
     }
 
     //like comment status
-    app.clickVoteComment = function(commentID){
+    app.clickVoteComment = function(commentID, indexComment){
       // app.hasVoted = false;
       var objectComment = {};
       objectComment.statusid = $routeParams.id;
-      objectComment.commentid = commentID;
-      User.checkVoteComment(commentID).then(function(data){
-        if(!data.data.isVoteComment){
-          User.voteTalkComment(objectComment).then(function(data){
+      objectComment.indexOfComment = indexComment;
+      objectComment.maincommentid = commentID;
+      console.log('this is Data from ui commen vote click: ',objectComment)
+
+          User.voteMainComment(objectComment).then(function(data){
             if(data.data.success){
               // hasVoted = true;
               app.voteSymbol = data.data.symbol;
@@ -461,17 +453,6 @@ $scope.upload = function () {
               console.log('this is vote: ',data.data.vote)
             }
           })
-        } else {
-          User.unvoteTalkComment(commentID).then(function(data){
-            if(data.data.success){
-              // hasVoted = false;
-              app.voteSymbol = data.data.symbol;
-              app.totalvote = data.data.unvote; //voteCount
-            }
-          })
-        }
-      })
-
     }
 
 
@@ -499,12 +480,16 @@ $scope.upload = function () {
     }
 
     //delete comment
-    app.deleteCommnet = function(commentID){
+    app.deleteCommnet = function(commentID, indexMainComment){ //No User Put To remove the comment. because it in array.
       app.errorMsg = false;
-      User.deleteComment(commentID).then(function(data){
+      var objectMainComment = {};
+      objectMainComment.statusid = $routeParams.id;
+      objectMainComment.maincommentid = commentID;
+      objectMainComment.indexOfComment = indexMainComment;
+      User.removeMainComment(objectMainComment).then(function(data){
         if(data.data.success){
           $timeout(function(){
-            $location.path('/profile')
+            $location.path('/')
           }, 0)
         } else {
           app.errorMsg = data.data.message;

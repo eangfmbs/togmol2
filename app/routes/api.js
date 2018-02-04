@@ -798,66 +798,98 @@ module.exports = function (router, io) {
 
     //Post a comment by user in the talk page
     router.post('/comment/:id', function(req, res){
-      var comment = new Comment();
-      // var status = new Status();
-      comment.statusid = req.params.id;
-      comment.username = req.decoded.username;
-      comment.comment  = req.body.comment;
-      console.log('comment.comment', comment.comment)
-      if(comment.comment === undefined || comment.comment === ''){
+      if(req.body.comment === undefined || req.body.comment === ''){
         return res.json({success: false, message: 'Fill needed in the comment box'});
       } else {
-        Status.findOne({_id: req.params.id}, function(err, status){
-          if(err) throw err;
-          else {
-            currentTotal = status.totalcomment;
-            countComment= currentTotal+1;
-            console.log("currentTotal comment should: ", currentTotal)
-            console.log("countComment should increase: ", countComment)
-            Status.findOneAndUpdate({_id: req.params.id}, {totalcomment:countComment}, {new:true}, function(err, count){
-              if(err) throw err;
+        if(!req.params.id){
+          res.json({success: false, message: 'No id provided'});
+        } else {
+          Status.findOne({_id: req.params.id}, function(err, status){
+            if(err){
+              return res.json({success: false, message: 'Invalid status id'});
+            } else {
+              if(!status){
+                return res.json({success: false, message: 'Status not found.'});
+              } else {
+                User.findOne({username: req.decoded.username}, function(err, user){
+                  if(err){
+                    return res.json({success: false, message: 'Something wrong happen with your account. Please contact to the admin'})
+                  } else {
+                    if(!user){
+                      return res.json("You need to register to our website first so that you can comment next time!");
+                    } else {
+                      status.totalcomment++;
+                      status.comments.push({
+                        comment: req.body.comment,
+                        commentator: user.username
+                      })
+                      status.save(function(err, cmmdata){
+                        if(err){
+                          return res.json({success: false, message: "Something when wrong when save data to the db"});
+                        } else {
+                          console.log("this is form of status: ", cmmdata)
+                          return res.json({success: true, commentor:user.username, message: 'You post a comment!', numberOfComment:status.totalcomment})
+                        }
+                      })
+                    }
+                  }
+                })
+              }
+            }
+          })
+        }
+      }
+    })
+
+
+
+
+
+
+
+
+
+
+      //   Status.findOne({_id: req.params.id}, function(err, status){
+      //     if(err) throw err;
+      //     else {
+      //       currentTotal = status.totalcomment;
+      //       countComment= currentTotal+1;
+      //       console.log("currentTotal comment should: ", currentTotal)
+      //       console.log("countComment should increase: ", countComment)
+      //       Status.findOneAndUpdate({_id: req.params.id}, {totalcomment:countComment}, {new:true}, function(err, count){
+      //         if(err) throw err;
               // else {
               //   console.log("what is count object: ", count)
               //   console.log("what is total comment now: ", count.totalcomment);
               // }
 
-            })
-          }
-        })
-        comment.save(function(err){
-          if(err){
-            return handleError(err);
-          }
+        //     })
+        //   }
+        // })
+        // comment.save(function(err){
+        //   if(err){
+        //     return handleError(err);
+        //   }
 //data socket test
-          console.log('socket in route!', socket.id);
-          isocket.broadcast.emit('notification',{ notification: req.body.comment });
+          // console.log('socket in route!', socket.id);
+          // isocket.broadcast.emit('notification',{ notification: req.body.comment });
           // isocket.broadcast.to('y_oqXlAWP8Rc96JKAAAE').emit('notification', { notification: req.body.comment });
           // socket.on('notification', function(){})
           // socket.emit('notification',{ notification: req.body.comment });
-          console.log('the ::::', req.body.comment)
+          // console.log('the ::::', req.body.comment)
 
           //end socket test
-          return res.json({success: true, commentor:comment.username, message: 'You post a comment!', numberOfComment: countComment});
-        })
-      }
-    })
+
 
     //route to get data of the comment on talk page back after comment and show it instantly
     router.get('/comment/:id', function(req, res){
-      var idOfStatus = req.params.id;
-      Comment.find({statusid: idOfStatus}, function(err, comments){ //statusid is the id of the status in comment document
+      Status.find({_id: req.params.id}, function(err, comments){ //statusid is the id of the status in comment document
         if(err){
           return handleError(err);
         } else {
-            Vote.find({statusid: idOfStatus}, function(err, votes){ //statusid is the id of the status in comment document
-              if(err){
-                return handleError(err);
-              } else {
-                  return res.json({success: true,comments: comments, votes: votes, ownuserandcmm: req.decoded.username});
-              }
-            })
-
-            // return res.json({success: true, comments: comments, ownuserandcmm: req.decoded.username, votestatus: 'Vote'});
+                  console.log('the data:', comments[0].comments)
+                  return res.json({success: true,comments: comments[0].comments, ownuserandcmm: req.decoded.username});
         }
       })
     })
@@ -934,15 +966,16 @@ module.exports = function (router, io) {
       var deleteID = req.params.id;
       console.log("Hello user null22222")
 
-      Comment.findOne({username: req.decoded.username}, function(err, user){
+      Status.findOne({username: req.decoded.username}, function(err, user){
         if(err){
           return handleError(err);
         } else {
           if(user){
-            Comment.findOneAndRemove({_id: deleteID}, function(err, cmm){
+            Status.findOneAndRemove({_id: deleteID}, function(err, cmm){
               if(err){
                 return handleError(err);
               } else {
+                console.log("Now you just delete it")
                 return res.json({success: true, message:'Message has been deleted'})
               }
             })
@@ -966,7 +999,7 @@ module.exports = function (router, io) {
               return res.json({isLike: false, symbol: 'Like'})
             } else {
               console.log('found like record')
-              return res.json({isLike: true, symbol: 'Unlike'})
+              return res.json({isLike: true, symbol: 'Liked'})
             }
         }
       })
@@ -997,7 +1030,7 @@ module.exports = function (router, io) {
          if(err){
          return res.json({success: false, message: 'You are already like this talk'})
          } else {
-       return res.json({success: true, like:countLike, symbol: 'Unlike'})
+       return res.json({success: true, like:countLike, symbol: 'Liked'})
      }
    })
 })
@@ -1031,106 +1064,167 @@ router.delete('/peopleUnlikecontent/:id', function(req, res){
   })
 })
 
-//this part is for vote comment section
-//check vote first
-router.get('/checkifvotecomment/:id', function(req, res){
-  var vote = new Vote();
-  Vote.findOne({username: req.decoded.username, commentid: req.params.id}, function(err, isVoteComment){
-    if(err){
-      return handleError(err);
+  router.put('/votemaincomment', function(req, res){
+    if(!req.body.maincommentid){
+      return res.json({success: false, message: 'this comment has been delete this moment by owner!'})
     } else {
-        if(!isVoteComment){
-          console.log('We cannot found record and this is the id')
-          return res.json({isVoteComment: false, symbol: 'Vote'})
-        } else {
-          console.log('found vote record')
-          return res.json({isVoteComment: true, symbol: 'Unvote'})
-        }
-    }
-  })
-})
-//route to get data of the comment on talk page back after comment and show it instantly
-// router.get('/comment/:id', function(req, res){
-//   var idOfStatus = req.params.id;
-  // Vote.find({}, function(err, votes){ //statusid is the id of the status in comment document
-  //   if(err){
-  //     return handleError(err);
-  //   } else {
-  //          if(vote.username === req.decoded.username){
-  //            return res.json({success: true, votes: votes, ownuserandcmm: req.decoded.username, votestatus: 'Unvote'});
-  //          } else {
-  //            return res.json({success: true, votes: votes, ownuserandcmm: req.decoded.username, votestatus: 'Vote'});
-  //          }
-  //   }
-  // })
-// })
-
-
-
-
-
-
-//router forvotecomment
-router.post('/peoplevotetalkcomment', function(req, res){
-    var vote = new Vote();
-     vote.commentid = req.body.commentid;
-     vote.statusid = req.body.statusid;
-     vote.username = req.decoded.username;
-     console.log('this Test Vote: ', req.body.testVote)
-     console.log('this is status ID: ', vote.statusid)
-     Comment.findOne({_id: vote.commentid}, function(err, comment){
-       if(err){
-         return handleError(err);
-       } else {
-         currentVote = comment.vote;
-         countVote = currentVote + 1;
-         Comment.findOneAndUpdate({_id: vote.commentid}, {vote: countVote}, {new: true}, function(err, vote){
-           if(err){
-             return handleError(err);
-           } else {
-             countVote=vote.vote;
-             console.log('this is count vote: ', countVote)
-           }
-         })
-       }
-     })
-       vote.save(function(err){
-       if(err){
-       return res.json({success: false, message: 'You are already vote this talk'})
-       } else {
-     return res.json({success: true, vote:countVote, symbol: 'Unvote'})
-   }
-  })
-})
-
-//this one will delete vote user from DB if the user change their mind to unvote talk comment status
-router.delete('/peopleunvotetalkcomment/:id', function(req, res){
-  var commentid = req.params.id;
-  var voteuser = req.decoded.username;
-  Comment.findOne({_id: commentid}, function(err, comment){
-    if(err){
-      return handleError(err);
-    } else {
-      currentVote = comment.vote;
-      countVote = currentVote - 1;
-      Comment.findOneAndUpdate({_id: commentid},{vote: countVote},{new: true}, function(err,vote){
+      Status.findOne({_id: req.body.statusid}, function(err, status){
         if(err){
-          return handleError(err);
-        } else{
-          countVote = vote.vote;
-          console.log('now the count vote decrease to: ', countVote)
+          return handleError(err); //res.json({success: false, message: 'Invalid blog id'});
+        } else {
+          if(!status){
+            return res.json({success: false, message: 'The status just has been deleted this moment'})
+          }
+          else {
+            User.findOne({username: req.decoded.username}, function(err, user){
+              if(err){
+                return handleError(err); //res.json({success: false, message: "Something wrong please contact to our admin"})
+              } else {
+                if(!user){
+                  return res.json({success: false, message: "Seem you don't have acount yet. how could you try to vote"})
+                } else {
+                  if(status.comments[req.body.indexOfComment].voteby.includes(user.username)){
+                    status.comments[req.body.indexOfComment].vote--;
+                    const arrayIndex = status.comments[req.body.indexOfComment].voteby.indexOf(user.username);
+                    status.comments[req.body.indexOfComment].voteby.splice(arrayIndex, 1);
+                    status.save(function(err){
+                      if(err){
+                        return res.json({success: false, message: 'Something wrong when you try to unvote it'})
+                      } else {
+                        return res.json({success: true, message: 'You have just change your mind to unvote it'});
+                      }
+                    })
+                  } else {
+                    status.comments[req.body.indexOfComment].vote++;
+                    console.log('the data of vote if have not voted yet: ', status.comments[req.body.indexOfComment].vote)
+                    console.log('the data of vote if have not voted yet: ', user.username)
+
+                    status.comments[req.body.indexOfComment].voteby.push(user.username);
+                    console.log('the vote by: ', status.comments[req.body.indexOfComment].voteby)
+                    status.save(function(err){
+                      if(err){
+                        return handleError(err);
+                        // return res.json({success: false, message: 'Something when wrong! please check your connection'})
+                      } else {
+                        return res.json({success: true, message: 'You voted this comment'})
+                      }
+                    })
+                  }
+                }
+              }
+            })
+          }
         }
       })
     }
   })
-  Vote.findOneAndRemove({username: voteuser, commentid: commentid}, function(err, unvote){
-    if(err){
-      return handleError(err);
-    } else {
-      return res.json({success: true, unvote: countVote, symbol: 'Vote'})
-    }
-  })
+
+//route for delete main comment in talk
+router.put('/removemaincomment', function(req, res){
+  if(!req.body.maincommentid){
+    return res.json({success: false, message: 'this comment has been delete this moment by owner!'})
+  } else {
+    Status.findOne({_id: req.body.statusid}, function(err, status){
+      if(err){
+        return handleError(err); //res.json({success: false, message: 'Invalid blog id'});
+      } else {
+        if(!status){
+          return res.json({success: false, message: 'The status just has been deleted this moment'})
+        }
+        else {
+          User.findOne({username: req.decoded.username}, function(err, user){
+            if(err){
+              return handleError(err); //res.json({success: false, message: "Something wrong please contact to our admin"})
+            } else {
+              if(!user){
+                return res.json({success: false, message: "Seem you don't have acount yet. how could you try to vote"})
+              } else {
+                console.log('id from collection here', status.comments[req.body.indexOfComment]._id)
+                console.log('make id from select goes here', req.body.maincommentid)
+
+                if(status.comments[req.body.indexOfComment]._id==req.body.maincommentid){
+                  status.comments.splice(req.body.indexOfComment, 1);
+                  console.log('make sure remove mainc goes here 222222222')
+
+                  status.save(function(err){
+                    if(err){
+                      return res.json({success: false, message: 'Something wrong when you try to unvote it'})
+                    } else {
+                      return res.json({success: true, message: 'You have just change your mind to unvote it'});
+                    }
+                  })
+                } else {
+                  return res.json({success: true, message: 'You have alr delete this comment'});
+                }
+              }
+            }
+          })
+        }
+      }
+    })
+  }
 })
+//router forvotecomment
+// router.post('/peoplevotetalkcomment', function(req, res){
+//     var vote = new Vote();
+//      vote.commentid = req.body.commentid;
+//      vote.statusid = req.body.statusid;
+//      vote.username = req.decoded.username;
+//      console.log('this Test Vote: ', req.body.testVote)
+//      console.log('this is status ID: ', vote.statusid)
+//      Comment.findOne({_id: vote.commentid}, function(err, comment){
+//        if(err){
+//          return handleError(err);
+//        } else {
+//          currentVote = comment.vote;
+//          countVote = currentVote + 1;
+//          Comment.findOneAndUpdate({_id: vote.commentid}, {vote: countVote}, {new: true}, function(err, vote){
+//            if(err){
+//              return handleError(err);
+//            } else {
+//              countVote=vote.vote;
+//              console.log('this is count vote: ', countVote)
+//            }
+//          })
+//        }
+//      })
+//        vote.save(function(err){
+//        if(err){
+//        return res.json({success: false, message: 'You are already vote this talk'})
+//        } else {
+//      return res.json({success: true, vote:countVote, symbol: 'Unvote'})
+//    }
+//   })
+// })
+
+//this one will delete vote user from DB if the user change their mind to unvote talk comment status
+// router.delete('/peopleunvotetalkcomment/:id', function(req, res){
+//   var commentid = req.params.id;
+//   var voteuser = req.decoded.username;
+//   Comment.findOne({_id: commentid}, function(err, comment){
+//     if(err){
+//       return handleError(err);
+//     } else {
+//       currentVote = comment.vote;
+//       countVote = currentVote - 1;
+//       Comment.findOneAndUpdate({_id: commentid},{vote: countVote},{new: true}, function(err,vote){
+//         if(err){
+//           return handleError(err);
+//         } else{
+//           countVote = vote.vote;
+//           console.log('now the count vote decrease to: ', countVote)
+//         }
+//       })
+//     }
+//   })
+//   Vote.findOneAndRemove({username: voteuser, commentid: commentid}, function(err, unvote){
+//     if(err){
+//       return handleError(err);
+//     } else {
+//       return res.json({success: true, unvote: countVote, symbol: 'Vote'})
+//     }
+//   })
+// })
 
 router.post('/updateProfilePhoto', function(req, res){
   User.findOne({username: req.decoded.username}, function(err, user){
