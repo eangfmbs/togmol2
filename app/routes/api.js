@@ -841,6 +841,53 @@ module.exports = function (router, io) {
       }
     })
 
+    //postSubComment by any user
+    router.post('/subcomment/:id', function(req, res){
+      if(req.body.subcomment === undefined || req.body.subcomment === ''){
+        return res.json({success: false, message: 'Fill needed in the comment box'});
+      } else {
+        console.log('are you hear mr')
+
+        if(!req.params.id){
+          res.json({success: false, message: 'No id provided'});
+        } else {
+          Status.findOne({_id: req.params.id}, function(err, status){
+            if(err){
+              return res.json({success: false, message: 'Invalid status id'});
+            } else {
+              if(!status){
+                return res.json({success: false, message: 'Status not found.'});
+              } else {
+                User.findOne({username: req.decoded.username}, function(err, user){
+                  if(err){
+                    return res.json({success: false, message: 'Something wrong happen with your account. Please contact to the admin'})
+                  } else {
+                    if(!user){
+                      return res.json("You need to register to our website first so that you can comment next time!");
+                    } else {
+                      status.totalcomment++;
+                      status.comments[req.body.indexOfMainComment].replies.push({
+                        comment: req.body.subcomment,
+                        commentator: user.username
+                      })
+                      status.save(function(err, cmmdata){
+                        if(err){
+                          return res.json({success: false, message: "Something when wrong when save data to the db"});
+                        } else {
+                          console.log("this is form of status: ", cmmdata)
+                          return res.json({success: true, commentor:user.username, message: 'You post a comment!', numberOfComment:status.totalcomment})
+                        }
+                      })
+                    }
+                  }
+                })
+              }
+            }
+          })
+        }
+      }
+    })
+
 
 
 
@@ -889,7 +936,7 @@ module.exports = function (router, io) {
           return handleError(err);
         } else {
                   console.log('the data:', comments[0].comments)
-                  return res.json({success: true,comments: comments[0].comments, ownuserandcmm: req.decoded.username});
+                  return res.json({success: true,comments: comments[0].comments, activeuser: req.decoded.username});
         }
       })
     })

@@ -5,6 +5,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
             templateUrl: '/app/views/pages/home.html',
             controller: 'mainCtrl',
             controllerAs: 'main'
+            // authenticated: false
         })
 
         .when('/register', {

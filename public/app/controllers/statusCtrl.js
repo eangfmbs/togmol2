@@ -396,19 +396,38 @@ $scope.upload = function () {
         app.sign = data.data.sign;
         console.log('the sing: ', app.sign)
         console.log('the all comment are: ', app.allComments)
-        app.userDecode = data.data.ownuserandcmm;
+        app.userDecode = data.data.activeuser;
+
         // app.allComments.forEach(function(comment){
-        //   app.allvotes.forEach(function(vote){
-        //     if(vote.username === app.userDecode && vote.commentid === comment._id){
-        //       app.arrVote.push(vote);
-        //       app.voteSymbol = "Unvote";
+        //     console.log("the comemnt of: ", comment.voteby.includes(app.userDecode))
+        //     if(comment.voteby.includes(app.userDecode)){
+        //       app.voteSymbol = "Voted";
+        //     } else {
+        //       app.voteSymbol = "Vote"; //do like this is just alway cauch the last one.
         //     }
-        //   })
         // })
+
+
       }
     })
   }
   loadComment();
+
+  //postSubComment
+  app.postSubComment = function(commentData, indexOfMainComment){ //if commentData is an object we will use app.
+    var statusID = $routeParams.id;
+    console.log("index of main comment: ", indexOfMainComment)
+    console.log("main comment: ", commentData)
+
+    var objectForSubComment = {};
+    objectForSubComment.subcomment = commentData;
+    objectForSubComment.indexOfMainComment = indexOfMainComment;
+    User.postSubComment(statusID, objectForSubComment).then(function(data){
+      if(data.data.success){
+        console.log("you just post a new subcomment")
+      }
+    })
+  }
 
 //like talk topic
     app.likeClick = function () {

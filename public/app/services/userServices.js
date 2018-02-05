@@ -104,6 +104,11 @@ angular.module('userServices',[])
     userFactory.getAllCommetInCurrentStatus = function(id){
       return $http.get('/api/comment/'+id);
     };
+    //User.postSubComment(statusID, comment);
+    userFactory.postSubComment = function(id, commentDataObject){
+      console.log('here is subcmmdata: ', commentDataObject)
+      return $http.post('/api/subcomment/'+id, commentDataObject);
+    }
     //User.getData2UpdateStatusTalk(id)
     userFactory.getData2UpdateStatusTalk = function(id){
       return $http.get('/api/updatetalk/'+id);
