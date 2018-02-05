@@ -68,6 +68,8 @@
 
   <div><h2>This is the comment of this status</h2></div>
   <div class="panel-group" ng-repeat = "comment in talk.allComments track by $index">
+
+    <!-Main Comment-->
       <div class="panel panel-default">
         <div class="panel-heading">{{comment.commentator}}</div>
         <div class="panel-body">{{comment.comment}}</div>
@@ -84,6 +86,24 @@
         </div>
       </div>
 
+    <!- Sub Main citeomment-->
+      <div class="panel panel-info" ng-repeat = "subcomment in comment.replies">
+        <div class="panel-heading">{{subcomment.commentator}}</div>
+        <div class="panel-body">{{subcomment.comment}}</div>
+        <div>
+          <!-- <button ng-show="talk.freshcomment" class="btn btn-primary" type="button" ng-click="talk.clickVoteComment(comment._id)">{{talk.voteSymbol}} {{talk.totalvote}}</button> -->
+          <!-- <button ng-repeat = "vote in talk.arrVote" ng-show="vote.commentid===comment._id" class="btn btn-primary" type="button" ng-click="talk.clickVoteComment(comment._id)">{{comment.vote}} {{talk.voteSymbol}} {{talk.totalvote}}</button> -->
+      <button class="btn btn-primary" type="submit" ng-click="talk.clickVoteComment(subcomment._id, $index)">{{subcomment.vote}} {{(subcomment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</button>
+        </div>
+        <div>
+          <button ng-show="subcomment.commentator===talk.userDecode" class="btn btn-danger" type="submit" ng-click="talk.deleteCommnet(subcomment._id, $index)">Delete?</button>
+        </div>
+        <div>
+          <button ng-show="subcomment.commentator===talk.userDecode" class="btn btn-info" type="submit" ng-click="talk.updateCommnet(subcomment._id)">Update</button>
+        </div>
+      </div>
+
+    <!- Reply Main Comment Form-->
       <form class="nino-subscribeForm" ng-submit = "talk.postSubComment(subcomment, $index)" novalidate>
           <div class="input-group input-group-lg">
               <input type="text" class="form-control" name="comment" placeholder="What do you think.." ng-model = "subcomment">
