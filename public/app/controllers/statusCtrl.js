@@ -340,8 +340,6 @@ $scope.upload = function () {
             app.likeSymbol = data.data.symbol;
           }
         });
-        //check for comment vote when start up the page
-        // User.checkVoteComment()
     } else {
       app.enabledEdit = data.data.enabledEdit;
       app.errorMsg = true;
@@ -413,22 +411,6 @@ $scope.upload = function () {
   }
   loadComment();
 
-  //postSubComment
-  app.postSubComment = function(commentData, indexOfMainComment){ //if commentData is an object we will use app.
-    var statusID = $routeParams.id;
-    console.log("index of main comment: ", indexOfMainComment)
-    console.log("main comment: ", commentData)
-
-    var objectForSubComment = {};
-    objectForSubComment.subcomment = commentData;
-    objectForSubComment.indexOfMainComment = indexOfMainComment;
-    User.postSubComment(statusID, objectForSubComment).then(function(data){
-      if(data.data.success){
-        console.log("you just post a new subcomment")
-      }
-    })
-  }
-
 //like talk topic
     app.likeClick = function () {
       var hasLiked = false; //initial that user haven't like yet
@@ -467,6 +449,7 @@ $scope.upload = function () {
           User.voteMainComment(objectComment).then(function(data){
             if(data.data.success){
               // hasVoted = true;
+              loadComment();
               app.voteSymbol = data.data.symbol;
               app.totalvote = data.data.vote; //voteCount
               console.log('this is vote: ',data.data.vote)
@@ -515,6 +498,61 @@ $scope.upload = function () {
         }
       })
     }
+
+    //postSubComment
+    app.postSubComment = function(commentData, indexOfMainComment){ //if commentData is an object we will use app.
+      var statusID = $routeParams.id;
+      console.log("index of main comment: ", indexOfMainComment)
+      console.log("main comment: ", commentData)
+
+      var objectForSubComment = {};
+      objectForSubComment.subcomment = commentData;
+      objectForSubComment.indexOfMainComment = indexOfMainComment;
+      User.postSubComment(statusID, objectForSubComment).then(function(data){
+        if(data.data.success){
+          loadComment();
+          console.log("you just post a new subcomment")
+        }
+      })
+    }
+
+  //vote for sub comment
+
+      app.clickVoteSubComment = function(subcommentid, maincommentindex, maincommentid, subcommentindex){
+        var objectForSubComment = {};
+        objectForSubComment.subcommentid = subcommentid;
+        objectForSubComment.indexOfSubMainComment = subcommentindex;
+        objectForSubComment.indexOfMainComment = maincommentindex;
+        objectForSubComment.maincommentid = maincommentid;
+        objectForSubComment.statusid = $routeParams.id;
+        User.voteOnSubComment(objectForSubComment).then(function(data){
+          if(data.data.success){
+            loadComment();
+            console.log("You just vote the sub comment");
+          } else {
+            console.log("Got a problem when attemp to vote a subcomment")
+          }
+        })
+      }
+
+      //remove Sub Comment or Delete.
+      app.removeSubCommnet = function(subcommentid, maincommentindex, maincommentid, subcommentindex){
+        var objectForSubComment = {};
+        objectForSubComment.subcommentid = subcommentid;
+        objectForSubComment.indexOfSubMainComment = subcommentindex;
+        objectForSubComment.indexOfMainComment = maincommentindex;
+        objectForSubComment.maincommentid = maincommentid;
+        objectForSubComment.statusid = $routeParams.id;
+        User.removeSubCommnet(objectForSubComment).then(function(data){
+          if(data.data.success){
+            loadComment();
+            console.info("Now you just remove your subcomment")
+          } else {
+            console.log("Got a problem when try to remove a subcomment.")
+          }
+        })
+      }
+
 
 
 })

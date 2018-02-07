@@ -126,10 +126,21 @@ angular.module('userServices',[])
     //   console.log("This is the object of ID Coment: ", objectCmt._id)
     //   return $http.delete('/api/deleteCommnet/'+objectCmt);
     // };
+    //User.votemaincomment(id)
+    userFactory.voteMainComment = function(object4Vote){
+      return $http.put('/api/votemaincomment', object4Vote)
+    }
     //User.deleteComment
     userFactory.removeMainComment = function(objectCmt){
-      console.log("This is the object of ID Coment: ", objectCmt._id)
       return $http.put('/api/removemaincomment', objectCmt);
+    }
+    //User.voteOnSubComment
+    userFactory.voteOnSubComment = function(objectSubCmt){
+      return $http.put('/api/votesubmaincomment', objectSubCmt);
+    }
+    //User.removeSubCommnet
+    userFactory.removeSubCommnet = function(objectSubCmt){
+      return $http.put('/api/removesubmaincomment', objectSubCmt);
     }
     //User.getComment()
     userFactory.getComment = function(){
@@ -167,10 +178,8 @@ angular.module('userServices',[])
     // userFactory.unvoteTalkComment = function(id){
     //   return $http.delete('/api/peopleunvotetalkcomment/'+id);
     // };
-    //User.votemaincomment(id)
-    userFactory.voteMainComment = function(object4Vote){
-      return $http.put('/api/votemaincomment', object4Vote)
-    }
+
+
     //User.updateProfilePhoto(imageCrop)
     userFactory.updateProfilePhoto = function(croppedPhoto){
       var fd = new FormData();

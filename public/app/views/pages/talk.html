@@ -93,10 +93,10 @@
         <div>
           <!-- <button ng-show="talk.freshcomment" class="btn btn-primary" type="button" ng-click="talk.clickVoteComment(comment._id)">{{talk.voteSymbol}} {{talk.totalvote}}</button> -->
           <!-- <button ng-repeat = "vote in talk.arrVote" ng-show="vote.commentid===comment._id" class="btn btn-primary" type="button" ng-click="talk.clickVoteComment(comment._id)">{{comment.vote}} {{talk.voteSymbol}} {{talk.totalvote}}</button> -->
-      <button class="btn btn-primary" type="submit" ng-click="talk.clickVoteComment(subcomment._id, $index)">{{subcomment.vote}} {{(subcomment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</button>
+      <button class="btn btn-primary" type="submit" ng-click="talk.clickVoteSubComment(subcomment._id, $parent.$index, comment._id, $index)">{{subcomment.vote}} {{(subcomment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</button>
         </div>
         <div>
-          <button ng-show="subcomment.commentator===talk.userDecode" class="btn btn-danger" type="submit" ng-click="talk.deleteCommnet(subcomment._id, $index)">Delete?</button>
+          <button ng-show="subcomment.commentator===talk.userDecode" class="btn btn-danger" type="submit" ng-click="talk.removeSubCommnet(subcomment._id, $parent.$index, comment._id, $index)">Delete?</button>
         </div>
         <div>
           <button ng-show="subcomment.commentator===talk.userDecode" class="btn btn-info" type="submit" ng-click="talk.updateCommnet(subcomment._id)">Update</button>

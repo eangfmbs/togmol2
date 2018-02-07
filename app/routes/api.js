@@ -1111,6 +1111,8 @@ router.delete('/peopleUnlikecontent/:id', function(req, res){
   })
 })
 
+//Vote for Main Comment
+
   router.put('/votemaincomment', function(req, res){
     if(!req.body.maincommentid){
       return res.json({success: false, message: 'this comment has been delete this moment by owner!'})
@@ -1211,6 +1213,117 @@ router.put('/removemaincomment', function(req, res){
     })
   }
 })
+
+//Vote for Sub Main Comment
+router.put('/votesubmaincomment', function(req, res){
+  if(!req.body.subcommentid){
+    return res.json({success: false, message: 'this subcomment is already deleted'})
+  } else {
+    if(!req.body.maincommentid){
+      return res.json({success: false, message: 'this comment has been delete this moment by owner!'})
+    } else {
+      Status.findOne({_id: req.body.statusid}, function(err, status){
+        if(err){
+          return handleError(err); //res.json({success: false, message: 'Invalid blog id'});
+        } else {
+          if(!status){
+            return res.json({success: false, message: 'The status just has been deleted this moment'})
+          }
+          else {
+            User.findOne({username: req.decoded.username}, function(err, user){
+              if(err){
+                return handleError(err); //res.json({success: false, message: "Something wrong please contact to our admin"})
+              } else {
+                if(!user){
+                  return res.json({success: false, message: "Seem you don't have acount yet. how could you try to vote"})
+                } else {
+                  if(status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.includes(user.username)){
+                    status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote--;
+                    const arrayIndex = status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.indexOf(user.username);
+                    status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.splice(arrayIndex, 1);
+                    status.save(function(err){
+                      if(err){
+                        return res.json({success: false, message: 'Something wrong when you try to unvote it'})
+                      } else {
+                        return res.json({success: true, message: 'You have just change your mind to unvote it'});
+                      }
+                    })
+                  } else {
+                    status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote++;
+                    console.log('the data of vote if have not voted yet: ', status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote)
+                    console.log('the data of vote if have not voted yet: ', user.username)
+
+                    status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.push(user.username);
+                    console.log('the vote by: ', status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby)
+                    status.save(function(err){
+                      if(err){
+                        return handleError(err);
+                        // return res.json({success: false, message: 'Something when wrong! please check your connection'})
+                      } else {
+                        return res.json({success: true, message: 'You voted this comment'})
+                      }
+                    })
+                  }
+                }
+              }
+            })
+          }
+        }
+      })
+    }
+  }
+})
+
+//route for Delete/Remove Sub Main Comment in talk
+router.put('/removesubmaincomment', function(req, res){
+  if(!req.body.subcommentid){
+    return res.json({success: false, message: 'this subcomment was just deleted already'})
+  } else {
+    if(!req.body.maincommentid){
+      return res.json({success: false, message: 'this comment has been delete this moment by owner!'})
+    } else {
+      Status.findOne({_id: req.body.statusid}, function(err, status){
+        if(err){
+          return handleError(err); //res.json({success: false, message: 'Invalid blog id'});
+        } else {
+          if(!status){
+            return res.json({success: false, message: 'The status just has been deleted this moment'})
+          }
+          else {
+            User.findOne({username: req.decoded.username}, function(err, user){
+              if(err){
+                return handleError(err); //res.json({success: false, message: "Something wrong please contact to our admin"})
+              } else {
+                if(!user){
+                  return res.json({success: false, message: "Seem you don't have acount yet. how could you try to vote"})
+                } else {
+                  console.log('id from collection here', status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment]._id)
+                  console.log('make id from select goes here', req.body.subcommentid)
+
+                  if(status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment]._id==req.body.subcommentid){
+                    status.comments[req.body.indexOfMainComment].replies.splice(req.body.indexOfSubMainComment, 1);
+                    console.log('make sure remove mainc goes here 222222222')
+
+                    status.save(function(err){
+                      if(err){
+                        return res.json({success: false, message: 'Something wrong when you try to unvote it'})
+                      } else {
+                        return res.json({success: true, message: 'You have just change your mind to unvote it'});
+                      }
+                    })
+                  } else {
+                    return res.json({success: true, message: 'You have alr delete this sub comment'});
+                  }
+                }
+              }
+            })
+          }
+        }
+      })
+    }
+  }
+})
+
 //router forvotecomment
 // router.post('/peoplevotetalkcomment', function(req, res){
 //     var vote = new Vote();
