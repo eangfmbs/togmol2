@@ -12,6 +12,10 @@ body {
   margin: 0;
   padding: 0; }
 
+  .md-button.md-fab.md-custumcolor {
+    color:red;
+  }
+
 [tabindex='-1']:focus {
   outline: none; }
 
@@ -228,10 +232,10 @@ html, body {
   letter-spacing: 0.005em; }
 
 .md-subhead {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.010em;
-  line-height: 24px; }
+  line-height: 20px; }
 
 /************
  * Body Copy
@@ -814,8 +818,8 @@ button.md-button::-moz-focus-inner {
     z-index: 20;
     line-height: 56px;
     min-width: 0;
-    width: 56px;
-    height: 56px;
+    width: 40px;
+    height: 40px;
     vertical-align: middle;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     border-radius: 50%;

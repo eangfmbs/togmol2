@@ -9,6 +9,11 @@ angular.module('mainControllers', ['authServices'])
     app.loadingContent = false; //don't show html part of angular until it finish loading data
     //this will help preventing user to see any content that surrounding data of angular syntax like {{..}}
 
+    //These 3 line is for create a text url
+    // $scope.getSlug = function(text){
+    // return text.replace(/\W+/g, '-');
+    // };
+
     // app.checkSession = function () {
     //     if(Auth.isLoggedIn()){
     //         app.checkingSession = true;

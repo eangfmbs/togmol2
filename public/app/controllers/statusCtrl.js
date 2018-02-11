@@ -318,6 +318,7 @@ $scope.upload = function () {
 //       }
 //     })
 .controller('talkCtrl', function(User, Socket, $scope, $timeout, $location, $routeParams){
+
   var app = this;
   app.title = "Hello Eang";
   app.text = "Some content goes here!";
@@ -346,6 +347,19 @@ $scope.upload = function () {
       app.errorMsg = data.data.message;
     }
   });
+
+  // the params for FabOfAngularjsMaterial
+      this.topDirections = ['left', 'up'];
+      this.bottomDirections = ['down', 'right'];
+
+      this.isOpen = false;
+      this.isOpenOnMainComment = false;
+
+      this.availableModes = ['md-fling', 'md-scale'];
+      this.selectedMode = 'md-scale';
+
+      this.availableDirections = ['up', 'down', 'left', 'right'];
+      this.selectedDirection = 'up';
   //handle with socket data from the server automatically
 
   // Socket.emit('notify', {});

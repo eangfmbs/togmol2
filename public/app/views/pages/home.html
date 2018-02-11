@@ -1,16 +1,22 @@
-<div class="container" infinite-scroll="main.nextPage()"
-infinite-scroll-disabled="main.busy||main.noMoreData" infinite-scroll-distance="2">
-  <div class="panel-group" ng-repeat = "status in main.allStatus track by $index">
-      <div class="panel panel-default">
-        <div class="panel-heading"><a href="/talk/{{status._id}}">{{status.username}} {{status.title}} Date: {{status.date | date: 'dd MMM, yyyy'}} Total Like: {{status.totallike}} Total View: {{status.statusview}} Answer: {{status.totalcomment}}</a></div>
-        <div class="panel-body" ng-bind-html="status.content">{{status.content}}</div>
-        <div class="panel-body" ng-repeat = "tag in status.tags">{{tag}}</div>
-      </div>
+<div class="container">
+  <div class="page-header">
+      <h1 id="timeline">ការបញ្ចេញមតិលើតុមូល</h1>
   </div>
-  <div class="row show-hide-message" ng-show="main.errorMsg">
-      <div class="alert alert-danger">
-          {{main.errorMsg}}
+  <div class="row">
+    <div class="col-lg-7 col-sm-6">
+      <div class="list-group">
+        <a href="/talk/{{status._id}}" ng-repeat = "status in main.allStatus track by $index" class="list-group-item list-group-item-action flex-column align-items-start">
+          <div class="d-flex w-100 justify-content-between">
+            <span class="badge badge-light pull-right"><i class="glyphicon glyphicon-retweet"></i>. {{status.totalcomment}}</span>
+            <h3 class="mb-1">{{status.title}}</h3>
+            <time class="timeline-time" datetime="2014-01-10T03:45"><i class="glyphicon glyphicon-time">.</i><span>{{status.date | date: 'dd MMM, yyyy'}}</span> <span>By {{status.username}}</span> <span>Total Like: {{status.totallike}} Total View: {{status.statusview}}</span></time>
+            <h6><span class="label label-danger" ng-repeat = "tag in status.tags">{{tag}}</span></h6>
+          </div>
+        </a>
       </div>
+    </div>
+    <div class="col-lg-5 col-sm-6" style="background-color:lavender;">Profile Goes Here</div>
   </div>
-  <div ng-show="main.busy"><H1>Loading Data..</H1></div>
+
+
 </div>

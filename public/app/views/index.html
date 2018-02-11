@@ -164,14 +164,15 @@ socketNTF.on('notification', function(notification){
 
         <section id="nino-slider" class="carousel slide container" data-ride="carousel">
 
-            <!-- Wrapper for slides -->
+            <!-- Wrapper for slides  -->
+            <!-- for carousel-inner we need to modify the height for mobile -->
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
                     <h2 class="nino-sectionHeading">
-                        <span class="nino-subHeading">Create Connection</span>
                         <span class="nino-subHeading">ស្វាគមន៍មកកាន់តុមូល</span>
+                        <span class="nino-subHeading">Create Connection</span>
                     </h2>
-                    <a href="#" class="nino-btn">Learn more</a>
+                    <a href="#" class="nino-btn">ចែករំលែក</a>
                 </div>
                 <div class="item">
                     <h2 class="nino-sectionHeading">
@@ -225,56 +226,11 @@ socketNTF.on('notification', function(notification){
 
 
 
-<!-- What We Do
-================================================== -->
-<section class="nino-testimonial">
-    <div class="container">
-
-
-
-
-
-        <div class="nino-testimonialSlider">
-            <ul>
-                <li>
-                    <div layout="row">
-                        <div class="nino-symbol fsr">
-                            <i class="mdi mdi-comment-multiple-outline nino-icon"></i>
-                        </div>
-                        <div>
-                            <p class="quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation."</p>
-                            <span class="name">Jon Doe</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div layout="row">
-                        <div class="nino-symbol fsr">
-                            <i class="mdi mdi-wechat nino-icon"></i>
-                        </div>
-                        <div>
-                            <p class="quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation."</p>
-                            <span class="name">Jon Doe</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div layout="row">
-                        <div class="nino-symbol fsr">
-                            <i class="mdi mdi-message-text-outline nino-icon"></i>
-                        </div>
-                        <div>
-                            <p class="quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation."</p>
-                            <span class="name">Jon Doe</span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</section><!--/#nino-testimonial-->
+<!-- Show the view here================================================== -->
 
 <div ng-view></div>
+<!-- End show the view here================================================== -->
+
 <!-- Footer
 ================================================== -->
 <footer id="footer">
