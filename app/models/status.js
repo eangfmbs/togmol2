@@ -8,6 +8,7 @@ var statusSchema = new Schema({
   title: {type: String, required: true},
   content: {type: String, required: false},
   url: {type: String, required: true, default: 'https://togmol.com'},
+  likeby: {type: Array, required: false},
   tags: [
     {type: String, required: false}
   ],

@@ -327,20 +327,10 @@ $scope.upload = function () {
     if(data.data.success){
       app.enabledEdit = data.data.enabledEdit;
       app.status = data.data.talk;
-      $scope.ownercontent = data.data.talk.username;
+      $scope.userDecode = data.data.talk.username;
       console.log('this talk view is: ', data.data.views)
-      console.log('this talk status is: ', $scope.ownercontent)
+      console.log('this talk status is: ', $scope.userDecode)
       app.totallike = data.data.like;
-      //check for comment vote when start up the page
-        User.checkLike($routeParams.id).then(function(data){//check fo get initial value of like or unlike
-          if(!data.data.isLike){
-            app.likeSymbol = data.data.symbol;
-            console.log("what is symbol now: ", data.data.symbol)
-          } else {
-            console.log("what is symbol now: ", data.data.symbol)
-            app.likeSymbol = data.data.symbol;
-          }
-        });
     } else {
       app.enabledEdit = data.data.enabledEdit;
       app.errorMsg = true;
@@ -349,17 +339,17 @@ $scope.upload = function () {
   });
 
   // the params for FabOfAngularjsMaterial
-      this.topDirections = ['left', 'up'];
-      this.bottomDirections = ['down', 'right'];
+      // this.topDirections = ['left', 'up'];
+      // this.bottomDirections = ['down', 'right'];
 
       this.isOpen = false;
       this.isOpenOnMainComment = false;
 
-      this.availableModes = ['md-fling', 'md-scale'];
+      // this.availableModes = ['md-fling', 'md-scale'];
       this.selectedMode = 'md-scale';
 
-      this.availableDirections = ['up', 'down', 'left', 'right'];
-      this.selectedDirection = 'up';
+      // this.availableDirections = ['up', 'down', 'left', 'right'];
+      // this.selectedDirection = 'up';
   //handle with socket data from the server automatically
 
   // Socket.emit('notify', {});
@@ -385,11 +375,11 @@ $scope.upload = function () {
         objectNTF.guesttext = 'guesttext';
         objectNTF.ownercontent = $scope.ownercontent;
         console.log('ownercontent', $scope.ownercontent)
-        User.notficationAlert(objectNTF).then(function(data){
-          if(data.data.success){
-            console.log('notficationAlert save!')
-          }
-        })
+        // User.notficationAlert(objectNTF).then(function(data){
+        //   if(data.data.success){
+        //     console.log('notficationAlert save!')
+        //   }
+        // })
       }
        else {
         app.errorMsg = data.data.message;
@@ -409,51 +399,37 @@ $scope.upload = function () {
         console.log('the sing: ', app.sign)
         console.log('the all comment are: ', app.allComments)
         app.userDecode = data.data.activeuser;
-
-        // app.allComments.forEach(function(comment){
-        //     console.log("the comemnt of: ", comment.voteby.includes(app.userDecode))
-        //     if(comment.voteby.includes(app.userDecode)){
-        //       app.voteSymbol = "Voted";
-        //     } else {
-        //       app.voteSymbol = "Vote"; //do like this is just alway cauch the last one.
-        //     }
-        // })
-
-
       }
     })
   }
   loadComment();
 
 //like talk topic
-    app.likeClick = function () {
+    app.clickLikeTalk = function () {
       var hasLiked = false; //initial that user haven't like yet
-      // check if the user has been click like yet
-      User.checkLike($routeParams.id).then(function(data){
-        if(!data.data.isLike){
-          User.likeTalk($routeParams.id).then(function(data){
+      User.likeContent($routeParams.id).then(function(data){
+        if(data.data.success){
+          console.log("user just like/unlike the content");
+          User.refreshWhenClickLike($routeParams.id).then(function(data){
             if(data.data.success){
-              hasLiked = true;
-              app.likeSymbol = data.data.symbol;
-              app.totallike = data.data.like; //likeCount
-              console.log(data.data.like)
+              app.enabledEdit = data.data.enabledEdit;
+              app.status = data.data.talk;
+              $scope.userDecode = data.data.talk.username;
+              app.totallike = data.data.like;
+            } else {
+              app.enabledEdit = data.data.enabledEdit;
+              app.errorMsg = true;
+              app.errorMsg = data.data.message;
             }
-          })
+          });
         } else {
-          User.unlikeTalk($routeParams.id).then(function(data){
-            if(data.data.success){
-              hasLiked = false;
-              app.likeSymbol = data.data.symbol;
-              app.totallike = data.data.unlike; //likeCount
-            }
-          })
+          console.log("got error from like system");
         }
       })
     }
 
     //like comment status
     app.clickVoteComment = function(commentID, indexComment){
-      // app.hasVoted = false;
       var objectComment = {};
       objectComment.statusid = $routeParams.id;
       objectComment.indexOfComment = indexComment;
@@ -462,25 +438,11 @@ $scope.upload = function () {
 
           User.voteMainComment(objectComment).then(function(data){
             if(data.data.success){
-              // hasVoted = true;
               loadComment();
-              app.voteSymbol = data.data.symbol;
-              app.totalvote = data.data.vote; //voteCount
-              console.log('this is vote: ',data.data.vote)
             }
           })
     }
 
-
-    // app.likeTalk = function(){
-    //   User.likeTalk($routeParams.id).then(function(data){
-    //     if(data.data.success){
-    //       console.log(data.data.message)
-    //     } else {
-    //       console.log(data.data.message)
-    //     }
-    //   })
-    // }
 //for delete topic of talk
     app.deleteTalk = function(){
       app.errorMsg = false;

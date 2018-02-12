@@ -63,19 +63,12 @@ angular.module('userServices',[])
     };
     //User.addingTag()
     userFactory.addingTag = function(tagData){
-      console.log('in user service tag: ', tagData);
       return $http.post('/api/tagtypedata', tagData);
-    }
+    };
     //User.showAllTag()
     userFactory.showAllTag = function(){
       return $http.get('/api/listalltags'); //list all tags for poster selecting when post a content
-    }
-    //User.insertTagsWhenPostQuestion()
-    // userFactory.insertTagsWhenPostQuestion = function(tags){
-    //   console.log('userServices tag: ', tags)
-    //   return $http.post('/api/inserttagswhenpostquestion', tags);
-    // }
-
+    };
 
     //From this route is the route for status when user post a content
     //User.postStatus(askData)
@@ -121,27 +114,30 @@ angular.module('userServices',[])
     userFactory.deleteTalkStatus = function(id){
       return $http.delete('/api/deletetalk/'+id);
     };
-    //User.deleteComment
-    // userFactory.deleteComment = function(objectCmt){
-    //   console.log("This is the object of ID Coment: ", objectCmt._id)
-    //   return $http.delete('/api/deleteCommnet/'+objectCmt);
-    // };
+    //User.likeContent
+    userFactory.likeContent = function(id){
+      return $http.put('/api/liketalkcontent/'+id);
+    };
+    // User.refreshWhenClickLike
+    userFactory.refreshWhenClickLike = function(id){
+      return $http.get('/api/refreshstatuswhenclicklike/'+id);
+    };
     //User.votemaincomment(id)
     userFactory.voteMainComment = function(object4Vote){
-      return $http.put('/api/votemaincomment', object4Vote)
-    }
+      return $http.put('/api/votemaincomment', object4Vote);
+    };
     //User.deleteComment
     userFactory.removeMainComment = function(objectCmt){
       return $http.put('/api/removemaincomment', objectCmt);
-    }
+    };
     //User.voteOnSubComment
     userFactory.voteOnSubComment = function(objectSubCmt){
       return $http.put('/api/votesubmaincomment', objectSubCmt);
-    }
+    };
     //User.removeSubCommnet
     userFactory.removeSubCommnet = function(objectSubCmt){
       return $http.put('/api/removesubmaincomment', objectSubCmt);
-    }
+    };
     //User.getComment()
     userFactory.getComment = function(){
       return $http.get('/api/getCommntToUpdate');
@@ -150,35 +146,6 @@ angular.module('userServices',[])
     userFactory.updateComment = function(){
       return $http.put('/api/updateCommnent');
     }
-
-    //this is the part of like
-    //User.checkLike(id)
-    userFactory.checkLike = function(id){
-      return $http.get('/api/checkiflike/'+id)
-    }
-    //User.likeTalk(id)
-    userFactory.likeTalk = function(id){
-      return $http.post('/api/peopleliketalkcontent/'+id);
-    };
-    //User.unlikeTalk(id)
-    userFactory.unlikeTalk = function(id){
-      return $http.delete('/api/peopleUnlikecontent/'+id);
-    };
-
-    //this is the part of vote
-    //User.checkLikeComment
-    // userFactory.checkVoteComment = function(id){
-    //   return $http.get('/api/checkifvotecomment/'+id);
-    // };
-    //User.likeTalkComment(commentid)
-    // userFactory.voteTalkComment = function(voteTalkComment){
-    //   return $http.post('/api/peoplevotetalkcomment' ,voteTalkComment);
-    // };
-    //User.unlikeTalkComment(commentid)
-    // userFactory.unvoteTalkComment = function(id){
-    //   return $http.delete('/api/peopleunvotetalkcomment/'+id);
-    // };
-
 
     //User.updateProfilePhoto(imageCrop)
     userFactory.updateProfilePhoto = function(croppedPhoto){
