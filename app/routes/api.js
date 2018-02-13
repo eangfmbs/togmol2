@@ -742,7 +742,7 @@ module.exports = function (router, io) {
 
     //get data from status collection to show on index.html
     router.get('/status', function(req, res){
-      Status.find({}, function(err, status){
+      Status.find({}, function(err, status){ //includes the findUser here to send profile user to the client also
         if(err){
           return handleError(err);
         }

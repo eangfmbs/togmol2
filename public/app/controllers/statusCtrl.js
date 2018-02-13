@@ -414,7 +414,7 @@ $scope.upload = function () {
             if(data.data.success){
               app.enabledEdit = data.data.enabledEdit;
               app.status = data.data.talk;
-              $scope.userDecode = data.data.talk.username;
+              app.userDecode = data.data.talk.username;
               app.totallike = data.data.like;
             } else {
               app.enabledEdit = data.data.enabledEdit;
