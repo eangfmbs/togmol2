@@ -4,7 +4,6 @@
       <md-card>
         <!-- <img ng-src="{{imagePath}}" class="md-card-image" alt="Washed Out"> -->
         <md-card-title>
-
           <div class="lock-size" layout="row" layout-align="end center">
           <md-fab-speed-dial style="z-index: 1" md-open="talk.isOpen" md-direction="down"
                              ng-class="talk.selectedMode">
@@ -12,6 +11,7 @@
                 <md-button class="md-icon-button" aria-label="Option">
                   <img ng-src="/assets/images/togmolicon/arrow-down.svg" class="md-card-image" alt="setting"/>
                 </md-button>
+            </md-fab-trigger>
             <md-fab-actions style="position: absolute; bottom: -105px;">
               <md-button ng-show="!talk.enabledEdit" aria-label="Reporting" class="md-fab md-raised md-mini">
                 <img ng-src="/assets/images/togmolicon/report-content.svg" class="md-card-image" alt="report togmol"/>
@@ -29,16 +29,6 @@
         </div>
         <md-card-title-text>
           <span class="md-headline">{{talk.status.title}}</span>
-          <table>
-            <tr>
-              <td>
-                Views:{{talk.status.statusview}} Answers: {{talk.status.totalcomment}}</span>
-              </td>
-              <td ng-repeat="tag in talk.status.tags" style="display:inline;">
-                <span class="label label-info">{{tag}}</span>
-              </td>
-            </tr>
-          </table>
         </md-card-title-text>
         </md-card-title>
         <md-card-content ng-bind-html="talk.status.content">
@@ -46,37 +36,41 @@
             {{talk.status.content}}
           </p>
         </md-card-content>
-        <md-card-header>
+        <md-card-actions layout="row" layout-align="start center">
+          <md-card-header>
           <md-card-avatar>
-            <md-icon class="md-avatar-icon" md-svg-icon="img/icons/menu.svg"></md-icon>
+            <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
           </md-card-avatar>
           <md-card-header-text>
             <span class="md-title">{{talk.status.username}}</span>
             <span style="font-size: 10px">{{talk.status.date | date: 'dd MMM, yyyy'}}</span>
           </md-card-header-text>
-          <md-card-actions layout="row" layout-align="start center">
-            <md-card-icon-actions>
-              <md-button class="md-icon-button" aria-label="Share">
-                <a href="#"
-                socialshare
-                socialshare-provider="facebook"
-                socialshare-text="720kb AngularJS Socialshare"
-                socialshare-hashtags="angularjs, angular-socialshare"
-                socialshare-url="https://www.google.co.th/?gws_rd=cr&dcr=0&ei=2GwWWpHQCcqDvQTA37XQBQ">
-                <img ng-src="/assets/images/togmolicon/share-togmol.svg" class="md-card-image" alt="comment"/>
-                </a>
-              </md-button>
-            </md-card-icon-actions>
-            <md-button class="md-raised" ng-click="talk.clickLikeTalk()">{{(talk.status.likeby.includes(userDecode))? "Liked":"Like"}} {{talk.totallike}}</md-button>
-          </md-card-actions>
-        </md-card-header>
+          </md-card-header>
+          <md-card-icon-actions>
+            <md-button class="md-icon-button" aria-label="toggle">
+              <a href="#"
+              socialshare
+              socialshare-provider="facebook"
+              socialshare-text="720kb AngularJS Socialshare"
+              socialshare-hashtags="angularjs, angular-socialshare"
+              socialshare-url="https://www.google.co.th/?gws_rd=cr&dcr=0&ei=2GwWWpHQCcqDvQTA37XQBQ">
+              <img ng-src="/assets/images/togmolicon/share-togmol.svg" class="md-card-image" alt="share"/>
+              </a>
+            </md-button>
+          </md-card-icon-actions>
+          <md-button class="md-raised" ng-click="talk.clickLikeTalk()">{{(talk.status.likeby.includes(userDecode))? "Liked":"Like"}} {{talk.totallike}}</md-button>
+        </md-card-actions>
       </md-card>
       <!-- this is textarea for user comment -->
+
+
+
+    <form ng-submit = "talk.postComment(commentData)" novalidate>
       <md-card>
         <div style="padding:20px 20px 0 20px">
           <md-input-container class="md-block">
                 <label>អ្នកគិតយ៉ាងណាដែរ..</label>
-                <textarea ng-model="user.biography" maxlength="2000" rows="4" md-select-on-focus></textarea>
+                <textarea  name="comment" ng-model = talk.commentData.comment maxlength="2000" rows="4" md-select-on-focus></textarea>
           </md-input-container>
         </div>
         <div style="padding:0px 17px 0 0; margin: -37px 0 0 0">
@@ -85,18 +79,259 @@
               <md-button class="md-icon-button" aria-label="Favorite">
                 <img ng-src="/assets/images/togmolicon/add-photo.svg" class="md-card-image" alt="comment"/>
               </md-button>
-              <md-button class="md-icon-button" aria-label="Favorite">
-                <img ng-src="/assets/images/togmolicon/audio.svg" class="md-card-image" alt="comment"/>
-              </md-button>
-              <md-button class="md-icon-button" aria-label="Favorite">
-                <img ng-src="/assets/images/togmolicon/link-page.svg" class="md-card-image" alt="comment"/>
-              </md-button>
             </md-card-icon-actions>
-            <md-button class="md-raised">Post</md-button>
+            <md-button class="md-raised" notification-text="talk.text" notification-title="talk.commentData.comment" type="submit">Post</md-button>
           </md-card-actions>
         </div>
       </md-card>
+    </form>
+    <!-- in case user enter Invalid -->
+    <div class="row show-hide-message" ng-show="talk.successMsg">
+        <div class="alert alert-success">
+            {{talk.successMsg}}
+        </div>
+    </div>
+
+    <div class="row show-hide-message" ng-show="talk.errorMsg">
+        <div class="alert alert-danger">
+            {{talk.errorMsg}}
+        </div>
+    </div>
       <!-- end textarea for user comment -->
+
+      <!-- place temp-file here -->
+
+
+      <!-- Answering System -->
+      <div ng-repeat = "comment in talk.allComments track by $index">
+        <md-card>
+          <!-- <img ng-src="{{imagePath}}" class="md-card-image" alt="Washed Out"> -->
+          <md-card-title>
+            <div class="lock-size" layout="row" layout-align="end center">
+            <md-fab-speed-dial style="z-index: 1" md-open="talk.isOpenOnMainComment" md-direction="down"
+                               ng-class="talk.selectedMode" class="md-fling">
+              <md-fab-trigger>
+                  <md-button class="md-icon-button" aria-label="Favorite">
+                    <img ng-src="/assets/images/togmolicon/arrow-down.svg" class="md-card-image" alt="comment"/>
+                  </md-button>
+              </md-fab-trigger>
+              <md-fab-actions style="position: absolute; bottom: -105px;">
+                <md-button ng-show="!comment.commentator===talk.userDecode" aria-label="Reporting" class="md-fab md-raised md-mini">
+                  <img ng-src="/assets/images/togmolicon/report-content.svg" class="md-card-image" alt="report togmol"/>
+                </md-button>
+                <md-button ng-show="comment.commentator===talk.userDecode" aria-label="Update" class="md-fab md-raised md-mini" ng-click="talk.updateCommnet(comment._id)">
+                  <a href="/updatetalk/{{talk.status._id}}">
+                    <img ng-src="/assets/images/togmolicon/update-talk.svg" class="md-card-image" alt="update"/>
+                  </a>
+                </md-button>
+                <md-button ng-show="comment.commentator===talk.userDecode" aria-label="Delete" class="md-fab md-raised md-mini" ng-click="talk.deleteCommnet(comment._id, $index)">
+                  <img ng-src="/assets/images/togmolicon/trash-can.svg" class="md-card-image" alt="delete"/>
+                </md-button>
+              </md-fab-actions>
+            </md-fab-speed-dial>
+          </div>
+          <md-card-content>
+            <p>
+              {{comment.comment}}
+            </p>
+          </md-card-content>
+          </md-card-title>
+          <md-card-actions layout="row" layout-align="start center">
+            <md-card-header>
+            <md-card-avatar>
+              <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
+            </md-card-avatar>
+            <md-card-header-text>
+              <span class="md-title">{{comment.commentator}}</span>
+              <span style="font-size: 10px">{{comment.date | date: 'dd MMM, yyyy'}}</span>
+            </md-card-header-text>
+            </md-card-header>
+            <md-card-icon-actions>
+              <md-button class="md-icon-button" aria-label="toggle">
+                <img ng-src="/assets/images/togmolicon/retweet.svg" class="md-card-image" alt="share"/>
+              </md-button>
+            </md-card-icon-actions>
+            <md-button class="md-raised" ng-click="talk.clickVoteComment(comment._id, $index)">{{comment.vote}} {{(comment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</md-button>
+          </md-card-actions>
+          <!-- break for sub main comment -->
+          <hr />
+          <!-- end break for sub main comment -->
+          <!-- SUBMAIN COMMENT -->
+          <div ng-repeat = "subcomment in comment.replies">
+            <md-card-title>
+              <div class="lock-size" layout="row" layout-align="end center">
+              <md-fab-speed-dial style="z-index: 1" md-open="talk.isOpenOnMainComment" md-direction="down"
+                                 ng-class="talk.selectedMode" class="md-fling">
+                <md-fab-trigger>
+                    <md-button class="md-icon-button" aria-label="Favorite">
+                      <img ng-src="/assets/images/togmolicon/arrow-down.svg" class="md-card-image" alt="comment"/>
+                    </md-button>
+                </md-fab-trigger>
+                <md-fab-actions style="position: absolute; bottom: -105px;">
+                  <md-button ng-show="!subcomment.commentator===talk.userDecode" aria-label="Reporting" class="md-fab md-raised md-mini">
+                    <img ng-src="/assets/images/togmolicon/report-content.svg" class="md-card-image" alt="report togmol"/>
+                  </md-button>
+                  <md-button ng-show="subcomment.commentator===talk.userDecode" aria-label="Update" class="md-fab md-raised md-mini" ng-click="talk.updateCommnet(subcomment._id)">
+                    <a href="/updatetalk/{{talk.status._id}}">
+                      <img ng-src="/assets/images/togmolicon/update-talk.svg" class="md-card-image" alt="update"/>
+                    </a>
+                  </md-button>
+                  <md-button ng-show="subcomment.commentator===talk.userDecode" aria-label="Delete" class="md-fab md-raised md-mini" ng-click="talk.removeSubCommnet(subcomment._id, $parent.$index, comment._id, $index)">
+                    <img ng-src="/assets/images/togmolicon/trash-can.svg" class="md-card-image" alt="delete"/>
+                  </md-button>
+                </md-fab-actions>
+              </md-fab-speed-dial>
+            </div>
+            <md-card-content>
+              <p>
+                {{subcomment.comment}}
+              </p>
+            </md-card-content>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="start center">
+              <md-card-header>
+              <md-card-avatar>
+                <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
+              </md-card-avatar>
+              <md-card-header-text>
+                <span class="md-title">{{subcomment.commentator}}</span>
+                <span style="font-size: 10px">{{subcomment.date | date: 'dd MMM, yyyy'}}</span>
+              </md-card-header-text>
+              </md-card-header>
+              <md-card-icon-actions>
+                <md-button class="md-icon-button" aria-label="toggle">
+                  <img ng-src="/assets/images/togmolicon/retweet.svg" class="md-card-image" alt="share"/>
+                </md-button>
+              </md-card-icon-actions>
+              <md-button class="md-raised" ng-click="talk.clickVoteSubComment(subcomment._id, $parent.$index, comment._id, $index)">{{subcomment.vote}} {{(subcomment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</md-button>
+            </md-card-actions>
+          </div>
+          <!-- submain comment reply system -->
+          <!-- <form ng-submit = "talk.postSubComment(subcomment, $index)" novalidate>
+              <div style="padding:20px 20px 0 20px">
+                <md-input-container class="md-block">
+                      <label>អ្នកគិតយ៉ាងណាដែរ..</label>
+                      <textarea  name="comment" ng-model = "subcomment" maxlength="2000" rows="1" md-select-on-focus></textarea>
+                </md-input-container>
+              </div>
+              <div style="padding:0px 17px 0 0; margin: -37px 0 0 0">
+                <md-card-actions layout="row" layout-align="start center">
+                  <md-card-icon-actions>
+                    <md-button class="md-icon-button" aria-label="Favorite">
+                      <img ng-src="/assets/images/togmolicon/add-photo.svg" class="md-card-image" alt="comment"/>
+                    </md-button>
+                  </md-card-icon-actions>
+                  <md-button class="md-raised" notification-text="talk.text" notification-title="talk.commentData.comment" type="submit">Post</md-button>
+                </md-card-actions>
+              </div>
+          </form> -->
+        </md-card>
+
+        <form ng-submit = "talk.postSubComment(subcomment, $index)" novalidate>
+          <div layout-gt-xs="row" style="padding:0 0px 0 15px">
+            <md-input-container class="md-block" flex-gt-xs>
+              <label>ឆ្លើយតប</label>
+              <input name="comment" ng-model = "subcomment">
+            </md-input-container>
+
+            <md-input-container>
+              <md-button class="md-icon-button" aria-label="toggle" notification-text="talk.text" notification-title="talk.commentData.comment" type="submit">
+                <img ng-src="/assets/images/togmolicon/subcomment-icon.svg" class="md-card-image" alt="comment"/>
+              </md-button>
+            </md-input-container>
+          </div>
+        </form>
+
+      </div>
+
+<!-- end answering system -->
+
+      </div>
+      <!-- Another side layout -->
+      <div flex-xs flex-gt-xs="40" layout="column">
+        <div style="padding: 15px 0 0 8px">
+          <table >
+            <tr>
+              <td>
+                Views:&nbsp;
+              </td>
+              <td>
+                {{talk.status.statusview}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Answers:&nbsp;
+              </td>
+              <td>
+                {{talk.status.totalcomment}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Tag:&nbsp;
+              </td>
+              <td ng-repeat="tag in talk.status.tags" style="display:inline;">
+                <span class="label label-info">{{tag}}</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <md-card>
+        <md-card-header>
+          <md-card-avatar>
+            <img class="md-user-avatar" ng-src="/assets/images/togmolicon/Information.svg"/>
+          </md-card-avatar>
+          <md-card-header-text>
+            <span class="md-title">Related Topic</span>
+          </md-card-header-text>
+        </md-card-header>
+
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">In-card mixed actions</span>
+            <span class="md-subhead">Reversed</span>
+          </md-card-title-text>
+        </md-card-title>
+
+        <md-card-actions layout="row" layout-align="start center">
+          <md-card-icon-actions>
+            <md-button class="md-icon-button" aria-label="toggle">
+              <img class="md-user-avatar" ng-src="/assets/images/togmolicon/share-togmol.svg"/>
+            </md-button>
+          </md-card-icon-actions>
+          <md-button class="md-raised">Contact</md-button>
+        </md-card-actions>
+        <md-card-content>
+          <p>
+            The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+            two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+          </p>
+        </md-card-content>
+      </md-card>
+      <md-card>
+        <img ng-src="/assets/images/our-blog/img-2.jpg" class="md-card-image" alt="Washed Out">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Join Us</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="start center">
+          <md-card-icon-actions>
+            <md-button class="md-icon-button" aria-label="Favorite">
+              <img class="md-user-avatar" ng-src="/assets/images/togmolicon/share-togmol.svg"/>
+            </md-button>
+          </md-card-icon-actions>
+          <md-button>Action 1</md-button>
+        </md-card-actions>
+        <md-card-content>
+          <p>
+            The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+            two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+          </p>
+        </md-card-content>
+      </md-card>
+      </div>
 
 
 
@@ -105,88 +340,14 @@
 
 
 
-
-
-
-
-
-
-
-  <div class="panel panel-info">
-    {{notification}}
-    <div class="panel-heading">{{talk.status.username}} {{talk.status.title}} Total Like: {{talk.status.totallike}} Total Views:{{talk.status.statusview}} Total Answer: {{talk.status.totalcomment}} Date: {{talk.status.date}}</div>
-    <div>
-      <button ng-show="talk.enabledEdit" class="btn btn-info" type="submit"><a href="/updatetalk/{{talk.status._id}}">Update?</a></button>
-    </div>
-    <div>
-      <button ng-show="talk.enabledEdit" type="button" class="btn btn-danger" ng-click="talk.deleteTalk()">Delete?</button>
-    </div>
-    <div>
-      <button  type="button" class="btn btn-success" ng-click="talk.clickLikeTalk()">{{(talk.likeby.includes(talk.userDecode))? "Liked":"Like"}} {{talk.totallike}}</button>
-    </div>
-    <div>
-      <a href="#"
-      socialshare
-      socialshare-provider="facebook"
-      socialshare-text="720kb AngularJS Socialshare"
-      socialshare-hashtags="angularjs, angular-socialshare"
-      socialshare-url="https://www.google.co.th/?gws_rd=cr&dcr=0&ei=2GwWWpHQCcqDvQTA37XQBQ">
-      <button type="button" class="btn btn-primary">Share</button>
-      </a>
-    </div>
-    <!-- <div>
-      <button  type="button" class="btn btn-success" if-btn-not-active ng-click="talk.likeTalk(false)">Like?</button>  ng-init="liked='Like'; likeCount=0"
-    </div>
-    <div>
-      <button  type="button" class="btn btn-success" if-btn-active ng-click="talk.likeTalk(true)">Dislike?</button>
-    </div> -->
-    <div class="panel-body">
-      {{talk.status.content}}
-    </div>
-    <div class="panel-body" ng-repeat="tag in talk.status.tags">
-      {{tag}}
-    </div>
-  </div>
-
-  <form class="nino-subscribeForm" ng-submit = "talk.postComment(commentData)" novalidate>
-      <div class="input-group input-group-lg">
-          <input type="text" class="form-control" name="comment" placeholder="What's on your mind.." ng-model = talk.commentData.comment>
-          <span class="input-group-btn">
-            <button class="show-button btn btn-info" notification-text="talk.text" notification-title="talk.commentData.comment" type="submit">Comment</button>
-          </span>
-      </div>
-  </form>
-
-  <!-- <form class="form-inline" ng-submit = "talk.postComment(commentData)" novalidate>
-     <div class="form-group">
-       <label>Comment</label>
-       <input type="text" name="comment" class="form-control" ng-model = talk.commentData.comment >
-     </div>
-     <button type="submit" class="btn btn-default">Comment</button>
-  </form> -->
-
-  <div class="row show-hide-message" ng-show="talk.successMsg">
-      <div class="alert alert-success">
-          {{talk.successMsg}}
-      </div>
-  </div>
-
-  <div class="row show-hide-message" ng-show="talk.errorMsg">
-      <div class="alert alert-danger">
-          {{talk.errorMsg}}
-      </div>
-  </div>
-
-  <div><h2>This is the comment of this status</h2></div>
-  <div class="panel-group" ng-repeat = "comment in talk.allComments track by $index">
+  <!-- <div><h2>This is the comment of this status</h2></div>
+  <div class="panel-group" ng-repeat = "comment in talk.allComments track by $index"> -->
 
     <!-Main Comment-->
-      <div class="panel panel-default">
+      <!-- <div class="panel panel-default">
         <div class="panel-heading">{{comment.commentator}}</div>
         <div class="panel-body">{{comment.comment}}</div>
         <div>
-          <!-- <button ng-show="talk.freshcomment" class="btn btn-primary" type="button" ng-click="talk.clickVoteComment(comment._id)">{{talk.voteSymbol}} {{talk.totalvote}}</button> -->
-          <!-- <button ng-repeat = "vote in talk.arrVote" ng-show="vote.commentid===comment._id" class="btn btn-primary" type="button" ng-click="talk.clickVoteComment(comment._id)">{{comment.vote}} {{talk.voteSymbol}} {{talk.totalvote}}</button> -->
       <button class="btn btn-primary" type="submit" ng-click="talk.clickVoteComment(comment._id, $index)">{{comment.vote}} {{(comment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</button>
         </div>
         <div>
@@ -195,16 +356,14 @@
         <div>
           <button ng-show="comment.commentator===talk.userDecode" class="btn btn-info" type="submit" ng-click="talk.updateCommnet(comment._id)">Update</button>
         </div>
-      </div>
+      </div> -->
 
     <!- Sub Main citeomment-->
-      <div class="panel panel-info" ng-repeat = "subcomment in comment.replies">
+      <!-- <div class="panel panel-info" ng-repeat = "subcomment in comment.replies">
         <div class="panel-heading">{{subcomment.commentator}}</div>
         <div class="panel-body">{{subcomment.comment}}</div>
         <div>
-          <!-- <button ng-show="talk.freshcomment" class="btn btn-primary" type="button" ng-click="talk.clickVoteComment(comment._id)">{{talk.voteSymbol}} {{talk.totalvote}}</button> -->
-          <!-- <button ng-repeat = "vote in talk.arrVote" ng-show="vote.commentid===comment._id" class="btn btn-primary" type="button" ng-click="talk.clickVoteComment(comment._id)">{{comment.vote}} {{talk.voteSymbol}} {{talk.totalvote}}</button> -->
-      <button class="btn btn-primary" type="submit" ng-click="talk.clickVoteSubComment(subcomment._id, $parent.$index, comment._id, $index)">{{subcomment.vote}} {{(subcomment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</button>
+            <button class="btn btn-primary" type="submit" ng-click="talk.clickVoteSubComment(subcomment._id, $parent.$index, comment._id, $index)">{{subcomment.vote}} {{(subcomment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</button>
         </div>
         <div>
           <button ng-show="subcomment.commentator===talk.userDecode" class="btn btn-danger" type="submit" ng-click="talk.removeSubCommnet(subcomment._id, $parent.$index, comment._id, $index)">Delete?</button>
@@ -212,17 +371,17 @@
         <div>
           <button ng-show="subcomment.commentator===talk.userDecode" class="btn btn-info" type="submit" ng-click="talk.updateCommnet(subcomment._id)">Update</button>
         </div>
-      </div>
+      </div> -->
 
     <!- Reply Main Comment Form-->
-      <form class="nino-subscribeForm" ng-submit = "talk.postSubComment(subcomment, $index)" novalidate>
+      <!-- <form class="nino-subscribeForm" ng-submit = "talk.postSubComment(subcomment, $index)" novalidate>
           <div class="input-group input-group-lg">
               <input type="text" class="form-control" name="comment" placeholder="What do you think.." ng-model = "subcomment">
               <span class="input-group-btn">
                 <button class="show-button btn btn-success" notification-text="talk.text" notification-title="talk.commentData.comment" type="submit">Reply</button>
               </span>
           </div>
-      </form>
+      </form> -->
 
-  </div>
+  <!-- </div> -->
 </div>

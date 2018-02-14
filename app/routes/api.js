@@ -719,27 +719,6 @@ module.exports = function (router, io) {
         }
     });
 
-    //insertTagsWhenPostQuestion
-    // router.post('/inserttagswhenpostquestion', function(req, res){
-    //   var tag = new Tag();
-    //   tag.tagtypeid = req.body.tags;
-    //   tag.statusid = req.body.statusid;
-    //   console.log('post status tag is tagtaype name:', tag.tagtypeid) //its a string because the tag's db is we defined as string so we need to change it to arr first
-    //   console.log('hrr is tagtaype statusid:', tag.statusid)
-    //   console.log('post tag name:', req.body.tags) //its a string because the tag's db is we defined as string so we need to change it to arr first
-    //   if(tag.tagtypeid=='' || tag.tagtypeid == undefined || tag.statusid=='' || tag.statusid == undefined){
-    //     return res.json({success:false, message: 'Please make sure you have already selected at least one tag'})
-    //   } else {
-    //       tag.save(function(err){
-    //         if(err){
-    //           return handleError(err);
-    //         } else {
-    //           res.json({success: true, message:'Successfully insert tags'})
-    //         }
-    //       })
-    //   }
-    // })
-
     //get data from status collection to show on index.html
     router.get('/status', function(req, res){
       Status.find({}, function(err, status){ //includes the findUser here to send profile user to the client also
