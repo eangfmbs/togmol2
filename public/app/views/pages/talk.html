@@ -3,7 +3,7 @@
     <div flex-xs flex-gt-xs="60" layout="column">
       <md-card>
         <!-- <img ng-src="{{imagePath}}" class="md-card-image" alt="Washed Out"> -->
-        <md-card-title>
+        <md-card-title style="margin: -3px 0 0 0;">
           <div class="lock-size" layout="row" layout-align="end center">
           <md-fab-speed-dial style="z-index: 1" md-open="talk.isOpen" md-direction="down"
                              ng-class="talk.selectedMode">
@@ -36,7 +36,7 @@
             {{talk.status.content}}
           </p>
         </md-card-content>
-        <md-card-actions layout="row" layout-align="start center">
+        <md-card-actions layout="row" layout-align="start center" style="padding: 0 15px 0 3px; margin: -15px 0 0 0;">
           <md-card-header>
           <md-card-avatar>
             <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
@@ -65,7 +65,7 @@
 
 
 
-    <form ng-submit = "talk.postComment(commentData)" novalidate>
+    <!-- <form ng-submit = "talk.postComment(commentData)" novalidate>
       <md-card>
         <div style="padding:20px 20px 0 20px">
           <md-input-container class="md-block">
@@ -84,7 +84,7 @@
           </md-card-actions>
         </div>
       </md-card>
-    </form>
+    </form> -->
     <!-- in case user enter Invalid -->
     <div class="row show-hide-message" ng-show="talk.successMsg">
         <div class="alert alert-success">
@@ -106,7 +106,7 @@
       <div ng-repeat = "comment in talk.allComments track by $index">
         <md-card>
           <!-- <img ng-src="{{imagePath}}" class="md-card-image" alt="Washed Out"> -->
-          <md-card-title>
+          <md-card-title style="margin: -17px 0 0 0;">
             <div class="lock-size" layout="row" layout-align="end center">
             <md-fab-speed-dial style="z-index: 1" md-open="talk.isOpenOnMainComment" md-direction="down"
                                ng-class="talk.selectedMode" class="md-fling">
@@ -136,7 +136,7 @@
             </p>
           </md-card-content>
           </md-card-title>
-          <md-card-actions layout="row" layout-align="start center">
+          <md-card-actions layout="row" layout-align="start center" style="padding: 0 15px 0 3px; margin: -30px 0 0 0;">
             <md-card-header>
             <md-card-avatar>
               <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
@@ -154,11 +154,11 @@
             <md-button class="md-raised" ng-click="talk.clickVoteComment(comment._id, $index)">{{comment.vote}} {{(comment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</md-button>
           </md-card-actions>
           <!-- break for sub main comment -->
-          <hr />
+          <!-- <hr /> -->
           <!-- end break for sub main comment -->
           <!-- SUBMAIN COMMENT -->
           <div ng-repeat = "subcomment in comment.replies">
-            <md-card-title>
+            <md-card-title style="margin: -27px 0 0 0;">
               <div class="lock-size" layout="row" layout-align="end center">
               <md-fab-speed-dial style="z-index: 1" md-open="talk.isOpenOnMainComment" md-direction="down"
                                  ng-class="talk.selectedMode" class="md-fling">
@@ -188,7 +188,7 @@
               </p>
             </md-card-content>
             </md-card-title>
-            <md-card-actions layout="row" layout-align="start center">
+            <md-card-actions layout="row" layout-align="start center" style="padding: 0 15px 0 3px; margin: -30px 0 0 0;">
               <md-card-header>
               <md-card-avatar>
                 <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
@@ -206,6 +206,7 @@
               <md-button class="md-raised" ng-click="talk.clickVoteSubComment(subcomment._id, $parent.$index, comment._id, $index)">{{subcomment.vote}} {{(subcomment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</md-button>
             </md-card-actions>
           </div>
+
           <!-- submain comment reply system -->
           <!-- <form ng-submit = "talk.postSubComment(subcomment, $index)" novalidate>
               <div style="padding:20px 20px 0 20px">
@@ -226,12 +227,11 @@
               </div>
           </form> -->
         </md-card>
-
         <form ng-submit = "talk.postSubComment(subcomment, $index)" novalidate>
-          <div layout-gt-xs="row" style="padding:0 0px 0 15px">
+          <div layout-gt-xs="row" style="padding:0 10px 0 28px; margin: 0 0 -14px 0">
             <md-input-container class="md-block" flex-gt-xs>
               <label>ឆ្លើយតប</label>
-              <input name="comment" ng-model = "subcomment">
+              <input name="comment" ng-model = "subcomment"  maxlength="2000">
             </md-input-container>
 
             <md-input-container>
@@ -241,11 +241,31 @@
             </md-input-container>
           </div>
         </form>
-
       </div>
 
 <!-- end answering system -->
-
+      <!-- MAIN COMMENT SYSTEM -->
+      <form ng-submit = "talk.postComment(commentData)" novalidate>
+        <md-card>
+          <div style="padding:20px 20px 0 20px">
+            <md-input-container class="md-block">
+                  <label>អ្នកគិតយ៉ាងណាដែរ..</label>
+                  <textarea  name="comment" ng-model = talk.commentData.comment maxlength="2000" rows="4" md-select-on-focus></textarea>
+            </md-input-container>
+          </div>
+          <div style="padding:0px 17px 0 0; margin: -37px 0 0 0">
+            <md-card-actions layout="row" layout-align="start center">
+              <md-card-icon-actions>
+                <md-button class="md-icon-button" aria-label="Favorite">
+                  <img ng-src="/assets/images/togmolicon/add-photo.svg" class="md-card-image" alt="comment"/>
+                </md-button>
+              </md-card-icon-actions>
+              <md-button class="md-raised" notification-text="talk.text" notification-title="talk.commentData.comment" type="submit">Post</md-button>
+            </md-card-actions>
+          </div>
+        </md-card>
+      </form>
+      <!-- END MAIN COMMENT SYSTEM -->
       </div>
       <!-- Another side layout -->
       <div flex-xs flex-gt-xs="40" layout="column">
