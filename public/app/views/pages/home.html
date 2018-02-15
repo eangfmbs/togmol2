@@ -2,6 +2,69 @@
   <div class="page-header">
       <h1 id="timeline">មតិលើតុមូល</h1>
   </div>
+
+  <md-card>
+    <md-card-title style="margin: -17px 0 0 0;">
+      <div class="lock-size" layout="row" layout-align="end center">
+        <span class="badge badge-light pull-right"><i class="glyphicon glyphicon-retweet"></i>. 22<span>
+
+    </div>
+    <md-card-content ng-bind-html="comment.comment | parseUrl">
+      <p>
+       wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+      </p>
+    </md-card-content>
+    </md-card-title>
+    <md-card-actions layout="row" layout-align="start center" style="padding: 0 15px 0 3px; margin: -30px 0 0 0;">
+      <md-card-header>
+      <md-card-avatar>
+        <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
+      </md-card-avatar>
+      <md-card-header-text>
+        <span class="md-title">{{comment.commentator}}</span>
+        <span style="font-size: 10px">{{comment.date | date: 'dd MMM, yyyy'}}</span>
+      </md-card-header-text>
+      </md-card-header>
+      <md-card-icon-actions>
+        <md-button class="md-icon-button" aria-label="toggle">
+          <img ng-src="/assets/images/togmolicon/retweet.svg" class="md-card-image" alt="share"/>
+        </md-button>
+      </md-card-icon-actions>
+      <md-button class="md-raised" ng-click="talk.clickVoteComment(comment._id, $index)">{{comment.vote}} {{(comment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</md-button>
+    </md-card-actions>
+    <hr />
+    <md-card-title style="margin: -17px 0 0 0;">
+      <div class="lock-size" layout="row" layout-align="end center">
+        <md-button aria-label="Delete" class="md-fab md-raised md-mini" ng-click="talk.deleteCommnet(comment._id, $index)">
+          <img ng-src="/assets/images/togmolicon/trash-can.svg" class="md-card-image" alt="delete"/>
+        </md-button>
+    </div>
+    <md-card-content ng-bind-html="comment.comment | parseUrl">
+      <p>
+       wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+      </p>
+    </md-card-content>
+    </md-card-title>
+    <md-card-actions layout="row" layout-align="start center" style="padding: 0 15px 0 3px; margin: -30px 0 0 0;">
+      <md-card-header>
+      <md-card-avatar>
+        <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
+      </md-card-avatar>
+      <md-card-header-text>
+        <span class="md-title">{{comment.commentator}}</span>
+        <span style="font-size: 10px">{{comment.date | date: 'dd MMM, yyyy'}}</span>
+      </md-card-header-text>
+      </md-card-header>
+      <md-card-icon-actions>
+        <md-button class="md-icon-button" aria-label="toggle">
+          <img ng-src="/assets/images/togmolicon/retweet.svg" class="md-card-image" alt="share"/>
+        </md-button>
+      </md-card-icon-actions>
+      <md-button class="md-raised" ng-click="talk.clickVoteComment(comment._id, $index)">{{comment.vote}} {{(comment.voteby.includes(talk.userDecode))? "Voted":"Vote"}}</md-button>
+    </md-card-actions>
+  </md-card>
+
+
   <div class="row">
     <div class="col-lg-7 col-sm-6">
       <div class="list-group">
@@ -17,6 +80,7 @@
     </div>
     <div class="col-lg-5 col-sm-6" style="background-color:lavender;">Profile Goes Here</div>
   </div>
+
 
 
 </div>

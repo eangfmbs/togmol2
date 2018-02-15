@@ -31,7 +31,7 @@
           <span class="md-headline">{{talk.status.title}}</span>
         </md-card-title-text>
         </md-card-title>
-        <md-card-content ng-bind-html="talk.status.content">
+        <md-card-content ng-bind-html="talk.status.content | parseUrl">
           <p>
             {{talk.status.content}}
           </p>
@@ -130,7 +130,7 @@
               </md-fab-actions>
             </md-fab-speed-dial>
           </div>
-          <md-card-content>
+          <md-card-content ng-bind-html="comment.comment | parseUrl">
             <p>
               {{comment.comment}}
             </p>
@@ -182,7 +182,7 @@
                 </md-fab-actions>
               </md-fab-speed-dial>
             </div>
-            <md-card-content>
+            <md-card-content ng-bind-html="subcomment.comment | parseUrl">
               <p>
                 {{subcomment.comment}}
               </p>
