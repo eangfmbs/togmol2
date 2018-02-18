@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 // https://stackoverflow.com/questions/8455685/how-to-implement-post-tags-in-mongo
 
 var statusSchema = new Schema({
+  profile: {type: String, required: true, default: 'dummyprofile.jpg'},
   title: {type: String, required: true},
   content: {type: String, required: false},
   url: {type: String, required: true, default: 'https://togmol.com'},

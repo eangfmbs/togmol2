@@ -709,13 +709,20 @@ module.exports = function (router, io) {
           res.json({success:false, message:'Please select at least one tag'})
         }
          else {
-            status.save(function (err, post) {
-                if(err){
-                    console.log(err);
-                } else {
-                    res.json({success:true, message:'You post a status!', statusid:post._id})
-                }
-            });
+           User.findOne({username: req.decoded.username}, function(err, user){
+             if(err){
+               return handleError(err);
+             } else {
+               status.profile = user.profile;
+               status.save(function (err, post) {
+                   if(err){
+                       console.log(err);
+                   } else {
+                       res.json({success:true, message:'You post a status!', statusid:post._id})
+                   }
+               });
+             }
+           })
         }
     });
 

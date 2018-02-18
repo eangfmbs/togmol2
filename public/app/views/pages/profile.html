@@ -86,13 +86,68 @@
 
           </div>
           <div class="col-lg-9 col-sm-6">
-            <div class="panel-group" ng-repeat = "status in profile.allStatus">
-                <div class="panel panel-default">
-                  <div class="panel-heading"><a href="/talk/{{status._id}}">{{status.date}} total view: {{status.statusview}} total like: {{status.totallike}} total answer: {{status.totalcomment}} {{status.username}} {{status.title}}</a></div>
-                  <div class="panel-body">{{status.content}}</div>
-                  <div ng-repeat = "tag in status.tags">{{tag}}</div>
-                </div>
-            </div>
+            <md-content class="md-padding" layout-xs="column" layout="row">
+              <div flex-xs flex-gt-xs="60" layout="column">
+                <md-card ng-repeat = "status in profile.allStatus">
+                  <!-- <img ng-src="{{imagePath}}" class="md-card-image" alt="Washed Out"> -->
+                  <md-card-title style="margin: -3px 0 0 0;">
+                    <div class="lock-size" layout="row" layout-align="end center">
+                    <md-fab-speed-dial style="z-index: 1" md-open="talk.isOpen" md-direction="down"
+                                       ng-class="talk.selectedMode">
+                      <md-fab-trigger>
+                          <md-button class="md-icon-button" aria-label="Option">
+                            <img ng-src="/assets/images/togmolicon/arrow-down.svg" class="md-card-image" alt="setting"/>
+                          </md-button>
+                      </md-fab-trigger>
+                      <!-- <md-fab-actions style="position: absolute; bottom: -105px;">
+                        <md-button ng-show="!talk.enabledEdit" aria-label="Reporting" class="md-fab md-raised md-mini">
+                          <img ng-src="/assets/images/togmolicon/report-content.svg" class="md-card-image" alt="report togmol"/>
+                        </md-button>
+                        <md-button ng-show="talk.enabledEdit" aria-label="Update" class="md-fab md-raised md-mini">
+                          <a href="/updatetalk/{{talk.status._id}}">
+                            <img ng-src="/assets/images/togmolicon/update-talk.svg" class="md-card-image" alt="update"/>
+                          </a>
+                        </md-button>
+                        <md-button aria-label="Delete" class="md-fab md-raised md-mini" ng-show="talk.enabledEdit" ng-click="talk.deleteTalk()">
+                          <img ng-src="/assets/images/togmolicon/trash-can.svg" class="md-card-image" alt="delete"/>
+                        </md-button>
+                      </md-fab-actions> -->
+                    </md-fab-speed-dial>
+                  </div>
+                  <md-card-title-text> <a href="/talk/{{status._id}}">
+                    <span class="md-headline">{{status.title}}</span>
+                    </a>
+                  </md-card-title-text>
+                  </md-card-title>
+                  <!-- <md-card-content ng-bind-html="talk.status.content | parseUrl">
+                    <p>
+                      {{talk.status.content}}
+                    </p>
+                  </md-card-content> -->
+                  <md-card-actions layout="row" layout-align="start center" style="padding: 0 15px 0 3px; margin: -15px 0 0 0;">
+                    <md-card-header>
+                    <md-card-avatar>
+                      <img class="md-user-avatar" ng-src="{{status.profile}}"/>
+                      <!-- <img ng-src="/assets/images/togmolicon/trash-can.svg" class="md-card-image" alt="delete"/> -->
+                    </md-card-avatar>
+                    <md-card-header-text>
+                      <span class="md-title">{{status.username}}</span>
+                      <span style="font-size: 10px">{{status.date | date: 'dd MMM, yyyy'}}</span>
+                    </md-card-header-text>
+
+                    </md-card-header>
+                    <md-card-icon-actions>
+                      <md-button class="md-icon-button" aria-label="toggle">
+                        <img ng-src="/assets/images/togmolicon/eye.svg" class="md-card-image" alt="see"/>
+                      </md-button><span style="padding: 9px 0 0 0px; margin: 0 0 0 -7px">{{status.statusview}}</span>
+                      <md-button class="md-icon-button" aria-label="toggle">
+                        <img ng-src="/assets/images/togmolicon/heart.svg" class="md-card-image" alt="see"/>
+                      </md-button><span style="padding: 9px 0 0 0px; margin: 0 0 0 -15px">{{status.totallike}}</span>
+                    </md-card-icon-actions>
+                  </md-card-actions>
+                </md-card>
+              </div>
+            </md-content>
             <div class="row show-hide-message" ng-show="profile.errorMsg">
                 <div class="alert alert-danger">
                     {{profile.errorMsg}}
