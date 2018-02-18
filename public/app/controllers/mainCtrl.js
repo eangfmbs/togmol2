@@ -75,6 +75,14 @@ angular.module('mainControllers', ['authServices'])
             app.isLoggedIn = false;//use to show login tab when we are in login
             app.username = '';
             app.loadingContent = true;
+            Auth.getAllStatus1().then(function(data){
+              if(data.data.success){
+                    app.allStatus = data.data.status
+              } else {
+                app.errorMsg = data.data.message;
+              }
+            })
+
         }
         if($location.hash()==='_=_') $location.hash(null);
     })

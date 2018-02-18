@@ -39,12 +39,14 @@
         <md-card-actions layout="row" layout-align="start center" style="padding: 0 15px 0 3px; margin: -15px 0 0 0;">
           <md-card-header>
           <md-card-avatar>
-            <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
+            <img class="md-user-avatar" ng-src="{{profile}}"/>
           </md-card-avatar>
-          <md-card-header-text>
+          <md-card-header-text><a href="/profile/{{talk.status.username}}">
             <span class="md-title">{{talk.status.username}}</span>
+            </a>
             <span style="font-size: 10px">{{talk.status.date | date: 'dd MMM, yyyy'}}</span>
           </md-card-header-text>
+
           </md-card-header>
           <md-card-icon-actions>
             <md-button class="md-icon-button" aria-label="toggle">
@@ -58,7 +60,7 @@
               </a>
             </md-button>
           </md-card-icon-actions>
-          <md-button class="md-raised" ng-click="talk.clickLikeTalk()">{{(talk.status.likeby.includes(userDecode))? "Liked":"Like"}} {{talk.totallike}}</md-button>
+          <md-button class="md-raised" ng-click="talk.clickLikeTalk(talk.status._id)">{{(talk.status.likeby.includes(talk.userDecode))? "Liked":"Like"}} {{talk.totallike}}</md-button>
         </md-card-actions>
       </md-card>
       <!-- this is textarea for user comment -->
@@ -139,10 +141,12 @@
           <md-card-actions layout="row" layout-align="start center" style="padding: 0 15px 0 3px; margin: -30px 0 0 0;">
             <md-card-header>
             <md-card-avatar>
-              <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
+              <img class="md-user-avatar" ng-src="{{comment.profile}}"/>
             </md-card-avatar>
             <md-card-header-text>
+              <a href="/profile/{{comment.commentator}}">
               <span class="md-title">{{comment.commentator}}</span>
+              </a>
               <span style="font-size: 10px">{{comment.date | date: 'dd MMM, yyyy'}}</span>
             </md-card-header-text>
             </md-card-header>
@@ -155,7 +159,6 @@
           </md-card-actions>
           <!-- break for sub main comment -->
           <!-- <hr /> -->
-          <!-- end break for sub main comment -->
           <!-- SUBMAIN COMMENT -->
           <div ng-repeat = "subcomment in comment.replies">
             <md-card-title style="margin: -27px 0 0 0;">
@@ -191,10 +194,12 @@
             <md-card-actions layout="row" layout-align="start center" style="padding: 0 15px 0 3px; margin: -30px 0 0 0;">
               <md-card-header>
               <md-card-avatar>
-                <img class="md-user-avatar" ng-src="/assets/images/togmolicon/user-togmol.svg"/>
+                <img class="md-user-avatar" ng-src="{{subcomment.profile}}"/>
               </md-card-avatar>
               <md-card-header-text>
+                <a href="/profile/{{subcomment.commentator}}">
                 <span class="md-title">{{subcomment.commentator}}</span>
+                </a>
                 <span style="font-size: 10px">{{subcomment.date | date: 'dd MMM, yyyy'}}</span>
               </md-card-header-text>
               </md-card-header>

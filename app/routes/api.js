@@ -732,16 +732,41 @@ module.exports = function (router, io) {
       }).sort({'_id': -1})
     })
 
+//data
+    router.get('/status1', function(req, res){
+      console.log("the one ...")
+      Status.find({}, function(err, status){ //includes the findUser here to send profile user to the client also
+        if(err){
+          return handleError(err);
+        }
+        if(!status){
+          return res.json({success: false, message: "Your token is expired please login again to see!"})
+        }
+        return res.json({success: true, status: status})
+      }).sort({'_id': -1})
+    })
+
     //get Status for owner profile user
-    router.get('/profile', function(req, res){
-      Status.find({username: req.decoded.username}, function(err, profile){
+    router.get('/profile/:username', function(req, res){
+      Status.find({username: req.params.username}, function(err, profile){
         if(err){
           return handleError(err);
         }
         if(!profile){
           return res.json({success: false, message: "Your token is expired please login again to see it!"})
+        } else {
+          User.findOne({username: req.params.username}, function(err, user){
+            if(err){
+              return handleError(err);
+            } else {
+              if(req.params.username === req.decoded.username){
+                return res.json({success: true, profile: profile, profile_pic: user.profile, activeuser: true})
+              } else {
+                return res.json({success: true, profile: profile, profile_pic: user.profile, activeuser: false})
+              }
+            }
+          })
         }
-        return res.json({success: true, profile: profile})
       })
     })
 
@@ -752,22 +777,27 @@ module.exports = function (router, io) {
         if(err){
           handleError(err);
         } else {
-            if (talk.username === req.decoded.username){
-              res.json({success: true, talk: talk, like: talk.totallike, enabledEdit: true})
-            } else { //check to increase for viewing
-              currentView = talk.statusview;
-              countView = currentView+1;
-
-              Status.findOneAndUpdate({_id:talkID}, {statusview:countView}, {new:true}, function(err, updateView){
-                if(err){
-                  throw err;
-                } else {
-                  countView: updateView.statusview;
-                }
-              })
-              console.log('the views number is: ', countView)
-              res.json({success: true, talk: talk, like: talk.totallike, enabledEdit: false, views: countView})
+          User.findOne({username: req.decoded.username}, function(err, user){
+            if(err){
+              return handleError(err)
+            } else {
+              if (talk.username === req.decoded.username){
+                res.json({success: true, talk: talk, like: talk.totallike, enabledEdit: true, profile_pic: user.profile})
+              } else { //check to increase for viewing
+                currentView = talk.statusview;
+                countView = currentView+1;
+                Status.findOneAndUpdate({_id:talkID}, {statusview:countView}, {new:true}, function(err, updateView){
+                  if(err){
+                    throw err;
+                  } else {
+                    countView: updateView.statusview;
+                  }
+                })
+                console.log('the views number is: ', countView)
+                res.json({success: true, talk: talk, like: talk.totallike, enabledEdit: false, views: countView, profile_pic: user.profile})
+              }
             }
+          })
           }
       })
     })
@@ -780,9 +810,9 @@ module.exports = function (router, io) {
           handleError(err);
         } else {
             if (talk.username === req.decoded.username){
-              res.json({success: true, talk: talk, like: talk.totallike, enabledEdit: true})
+              res.json({success: true, talk: talk, like: talk.totallike, enabledEdit: true, usernameNow:req.decoded.username})
             } else { //check to increase for viewing
-              res.json({success: true, talk: talk, like: talk.totallike, enabledEdit: false})
+              res.json({success: true, talk: talk, like: talk.totallike, enabledEdit: false, usernameNow:req.decoded.username})
             }
           }
       })
@@ -813,7 +843,8 @@ module.exports = function (router, io) {
                       status.totalcomment++;
                       status.comments.push({
                         comment: req.body.comment,
-                        commentator: user.username
+                        commentator: user.username,
+                        profile: user.profile
                       })
                       status.save(function(err, cmmdata){
                         if(err){
@@ -860,7 +891,8 @@ module.exports = function (router, io) {
                       status.totalcomment++;
                       status.comments[req.body.indexOfMainComment].replies.push({
                         comment: req.body.subcomment,
-                        commentator: user.username
+                        commentator: user.username,
+                        profile: user.profile
                       })
                       status.save(function(err, cmmdata){
                         if(err){

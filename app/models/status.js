@@ -18,6 +18,7 @@ var statusSchema = new Schema({
   // ],
   comments: [
     {
+      profile: {type: String, required: true, default: 'dummyprofile.jpg'},
       comment: {type: String, required: false},
       commentator: {type: String, required: true},
       date: {type: Date, required: true, default: Date.now},
@@ -25,6 +26,7 @@ var statusSchema = new Schema({
       voteby: {type: Array, required: false},
       replies: [
         {
+          profile: {type: String, required: true, default: 'dummyprofile.jpg'},
           comment: {type: String, required: false},
           commentator: {type: String, required: false},
           date: {type: Date, required: true, default: Date.now},

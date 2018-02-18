@@ -193,12 +193,17 @@ angular.module('statusController',['userServices','authServices'])
   // })
 // })
 
-.controller('profileCtrl', function($scope, User, $mdToast, ImageService, $timeout, $location){
+.controller('profileCtrl', function($scope, User, $mdToast, ImageService, $timeout,$routeParams, $location){
   var app = this;
-  User.getProfileStatus().then(function(data){
+  $scope.username = $routeParams.username;
+  User.getProfileStatus($routeParams.username).then(function(data){
     if(data.data.success){
+      $scope.activeuser = data.data.activeuser;
+      $scope.photo = true;
       console.log(data.data.profile)
       app.allStatus = data.data.profile;
+      $scope.croppedPhoto = data.data.profile_pic;
+      console.log('data of photo',data.data.profile_pic);
     } else {
       app.errorMsg = data.data.message;
     }
@@ -209,7 +214,6 @@ angular.module('statusController',['userServices','authServices'])
   $scope.loading = false;
   $scope.uploadPhoto = null;
   $scope.croppedPhoto = null;
-
   $scope.readFileImg = function(files){
   $scope.uploadPhoto = null;
   $scope.croppedPhoto = null;
@@ -246,12 +250,6 @@ $scope.upload = function () {
                 .highlightAction(true)
                 .position('left');
                 $mdToast.show(toast);
-// or use the toast bellow
-               //  $mdToast.show (
-               //    $mdToast.simple()
-               //    .textContent('Hello World!')
-               //    .hideDelay(3000)
-               // );
       } else {
         Toaster.toastErrorMessage($scope, 'Error saving photo.');
       }
@@ -328,7 +326,8 @@ $scope.upload = function () {
       app.enabledEdit = data.data.enabledEdit;
       app.status = data.data.talk;
       $scope.userDecode = data.data.talk.username;
-      console.log('this talk view is: ', data.data.views)
+      $scope.profile = data.data.profile_pic;
+      console.log('this talk profile: ', $scope.profile)
       console.log('this talk status is: ', $scope.userDecode)
       app.totallike = data.data.like;
     } else {
@@ -405,16 +404,15 @@ $scope.upload = function () {
   loadComment();
 
 //like talk topic
-    app.clickLikeTalk = function () {
-      var hasLiked = false; //initial that user haven't like yet
-      User.likeContent($routeParams.id).then(function(data){
+    app.clickLikeTalk = function (id) {
+      User.likeContent(id).then(function(data){
         if(data.data.success){
           console.log("user just like/unlike the content");
           User.refreshWhenClickLike($routeParams.id).then(function(data){
             if(data.data.success){
               app.enabledEdit = data.data.enabledEdit;
               app.status = data.data.talk;
-              app.userDecode = data.data.talk.username;
+              app.userDecode = data.data.usernameNow;
               app.totallike = data.data.like;
             } else {
               app.enabledEdit = data.data.enabledEdit;
@@ -571,12 +569,12 @@ $scope.upload = function () {
     var emails = /(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})/gim
 
     return function(text) {
-        if(text.match(urls)) {
-            text = text.replace(urls, "<a href=\"$1\" target=\"_blank\">$1</a>")
-        }
-        if(text.match(emails)) {
-            text = text.replace(emails, "<a href=\"mailto:$1\">$1</a>")
-        }
+        // if(text.match(urls)) {
+        //     text = text.replace(urls, "<a href=\"$1\" target=\"_blank\">$1</a>")
+        // }
+        // if(text.match(emails)) {
+        //     text = text.replace(emails, "<a href=\"mailto:$1\">$1</a>")
+        // }
 
         return text
     }

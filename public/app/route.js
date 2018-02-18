@@ -22,7 +22,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
             templateUrl: '/app/views/pages/user/logout.html',
             authenticated: true
         })
-        .when('/profile', {
+        .when('/profile/:username', {
             templateUrl: '/app/views/pages/profile.html',
             controller: 'profileCtrl',
             controllerAs: 'profile',

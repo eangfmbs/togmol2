@@ -79,9 +79,13 @@ angular.module('userServices',[])
     userFactory.getAllStatus = function(){
       return $http.get('/api/status');
     };
+    // userFactory.getAllStatus1 = function(){
+    //   console.log("HE is Eang!")
+    //   return $http.get('/api/status1');
+    // };
     //User.getProfileStatus()
-    userFactory.getProfileStatus = function(){
-      return $http.get('/api/profile');
+    userFactory.getProfileStatus = function(username){
+      return $http.get('/api/profile/'+username);
     };
     //User.getDiscussion(id)
     userFactory.getDiscussion = function(id){

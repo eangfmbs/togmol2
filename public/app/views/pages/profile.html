@@ -10,7 +10,7 @@
                       <!-- <img alt="" src="https://lh3.googleusercontent.com/-7u4lQZKPLao/AAAAAAAAAAI/AAAAAAAAZVw/5Caf-jo14f4/photo.jpg?sz=328"> -->
 <!-- profile image -->
                   <!-- drop box -->
-          <div ng-show="!uploadPhoto && !profile.photo && !loading"
+          <div ng-show="!uploadPhoto && !photo && !loading"
             class="drop-box drop-box-container"
             ngf-drag-over-class="drop-box-dragover"
             ngf-change="readFileImg($files)" ngf-drop=""
@@ -46,7 +46,7 @@
           class="md-raised submit-button md-accent button-center block"
           ng-cloak="">Save Photo</md-button>
         <!--Reset-->
-        <md-button ng-show="photo && loading"
+        <md-button ng-show="photo && !loading && activeuser"
           ngf-select="" ngf-change="readFileImg($files)"
           ngf-select="" ng-model="files"
           ngf-multiple="false"
@@ -60,7 +60,7 @@
                   </div><br />
                   <div class="info">
                       <div class="title">
-                          <a target="_blank" href="http://scripteden.com/">eangfmbs</a>
+                          {{username}}
                       </div>
                       <div class="desc">Passionate designer</div>
                       <div class="desc">Curious developer</div>
@@ -86,7 +86,6 @@
 
           </div>
           <div class="col-lg-9 col-sm-6">
-            <div>Hello. This is Home of {{main.username}}</div>
             <div class="panel-group" ng-repeat = "status in profile.allStatus">
                 <div class="panel panel-default">
                   <div class="panel-heading"><a href="/talk/{{status._id}}">{{status.date}} total view: {{status.statusview}} total like: {{status.totallike}} total answer: {{status.totalcomment}} {{status.username}} {{status.title}}</a></div>

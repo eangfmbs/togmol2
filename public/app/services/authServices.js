@@ -19,6 +19,14 @@ angular.module('authServices',[])
             }
         };
 
+        //User.getAllStatus()
+        authFactory.getAllStatus1 = function(){
+          // if(AuthToken.getToken(){
+            console.log("the data is word:")
+            return $http.get('/api/status1');
+          // })
+        };
+
         // Auth.facebook(token) //to save it in the client storage to keep user login
         authFactory.facebook = function(token){
           AuthToken.setToken(token);

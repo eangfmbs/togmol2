@@ -150,7 +150,7 @@ socketNTF.on('notification', function(notification){
                             <li ng-show="main.isLoggedIn && main.authorized"><a href="/management">Management</a></li>
                             <li ng-show="!main.isLoggedIn"><a href="/register">Register</a></li>
                             <li ng-show="!main.isLoggedIn"><a href="/login">Login</a></li>
-                            <li ng-show="main.isLoggedIn"><a href="/profile">{{main.username}}</a></li>
+                            <li ng-show="main.isLoggedIn"><a href="/profile/{{main.username}}">{{main.username}}</a></li>
                             <li ng-show="main.isLoggedIn"><a href="#" ng-click="main.isLogout();">Logout</a> </li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
@@ -224,10 +224,7 @@ socketNTF.on('notification', function(notification){
     </div>
 </header><!--/#header-->
 
-
-
 <!-- Show the view here================================================== -->
-
 <div ng-view></div>
 <!-- End show the view here================================================== -->
 
