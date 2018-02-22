@@ -72,10 +72,12 @@ angular.module('mainControllers', ['authServices'])
             });
             // console.log("User is on login");
         } else {
+          //add one
+            // app.authorized = true; kou mean ort just dak on 2/22/2018
             app.isLoggedIn = false;//use to show login tab when we are in login
             app.username = '';
             app.loadingContent = true;
-            Auth.getAllStatus1().then(function(data){
+            User.getAllStatus().then(function(data){
               if(data.data.success){
                     app.allStatus = data.data.status
               } else {
@@ -132,51 +134,23 @@ angular.module('mainControllers', ['authServices'])
     }
 
   //  pull all status to show on index.html
-
-  User.getAllStatus().then(function(data){
-    if(data.data.success){
-      // length = data.data.status.length;
-      // allTalkData = data.data.status;
-      // app.nextPage = function(){
-      //   if(app.busy){
-      //     console.log("out of DAta1")
-      //     return;
-      //   }
-      //   // app.busy = true;
-      //   for(var i=0;i<length;i++){
-          app.allStatus = data.data.status
-      //     app.allStatus.push(allTalkData[i])
-      //   }
-      //   page++;
-      //   app.busy = true;;
-      // };
-
-    } else {
-      app.errorMsg = data.data.message;
+  // new add
+  app.allStatus = [];
+  app.busy = false;
+  //end new add
+  app.nextPage = function(){
+    if(app.busy){
+      return;
     }
-  })
-
-  // app.nextPage = function(){
-  //   if(!app.busy){
-  //     return;
-  //   }
-  //   app.busy = true;
-  //   app.allStatus = app.allTalkData.concat(app.allTalkData.splice(page*step, step))
-  //   console.log('this is app. ', app.allStatus)
-  //   page++;
-  //   app.busy = false;
-  //   if(length === 0){
-  //     app.noMoreData = true;
-  //     console.log("out of DAta")
-  //   }
-  // }
-
-  // User.getTagsShowOnHomePage().then(function(data){
-  //   if(data.data.success){
-  //     app.tags = data.data.tags;
-  //   } else {
-  //     app.errorMsg = data.data.message;
-  //   }
-  // })
-
+    app.busy = true;
+    User.getAllStatus().then(function(data){
+      if(data.data.success){
+        console.log("hello Eang first")
+        app.allStatus = data.data.status
+        app.busy = false;
+      } else {
+        app.errorMsg = data.data.message;
+      }
+    }.bind(this)); //can elimiinate the .bind(this)
+  };
 });

@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 // https://stackoverflow.com/questions/8455685/how-to-implement-post-tags-in-mongo
 
 var statusSchema = new Schema({
-  profile: {type: String, required: true, default: 'dummyprofile.jpg'},
+  profile: {type: String, required: true, default: 'http://res.cloudinary.com/kit/image/upload/v1518707831/wexshb3qh0pyq5dkbaze.png'},
   title: {type: String, required: true},
   content: {type: String, required: false},
   url: {type: String, required: true, default: 'https://togmol.com'},
@@ -19,7 +19,7 @@ var statusSchema = new Schema({
   // ],
   comments: [
     {
-      profile: {type: String, required: true, default: 'dummyprofile.jpg'},
+      profile: {type: String, required: true, default: 'http://res.cloudinary.com/kit/image/upload/v1518707831/wexshb3qh0pyq5dkbaze.png'},
       comment: {type: String, required: false},
       commentator: {type: String, required: true},
       date: {type: Date, required: true, default: Date.now},
@@ -27,7 +27,7 @@ var statusSchema = new Schema({
       voteby: {type: Array, required: false},
       replies: [
         {
-          profile: {type: String, required: true, default: 'dummyprofile.jpg'},
+          profile: {type: String, required: true, default: 'http://res.cloudinary.com/kit/image/upload/v1518707831/wexshb3qh0pyq5dkbaze.png'},
           comment: {type: String, required: false},
           commentator: {type: String, required: false},
           date: {type: Date, required: true, default: Date.now},

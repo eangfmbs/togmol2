@@ -1,5 +1,5 @@
 angular.module('statusController',['userServices','authServices'])
-.controller('askCtrl', function(User, $scope, $timeout, $location){
+.controller('askCtrl', function(User, $scope, $timeout, $mdToast, ImageService, $location){
   var app = this;
   app.arrTag = [];
   var postStatusObject = {};
@@ -19,6 +19,59 @@ angular.module('statusController',['userServices','authServices'])
     })
   }
   grapAllShowTags();
+
+  //start upload image
+  $scope.loading = false;
+  $scope.uploadPhoto = null;
+  $scope.croppedPhoto = null;
+
+  $scope.readFileImg = function(files){
+  $scope.uploadPhoto = null;
+  $scope.croppedPhoto = null;
+  $scope.photo = null;
+  if (files && files.length) { //this part is just pass a file and update a scope with a new file
+    var readImgCallback = function(err, img){
+      $scope.loading = false;
+      if(err) return Toaster.toastErrorMessage($scope, err);
+
+      $scope.$apply(function(){ //function to update the scope with new file when something change
+        $scope.uploadPhoto = img;
+      });
+    };
+    $scope.loading = true;
+    ImageService.readImageFile(files[0], readImgCallback);
+  }
+};
+
+$scope.upload = function () {
+  if ($scope.croppedPhoto) {
+    $scope.myphoto=$scope.croppedPhoto;
+    $scope.photo=$scope.croppedPhoto;
+    var objectCrop = {};
+    objectCrop.profile = $scope.croppedPhoto;
+    $scope.loading = true;
+    console.log("the file is:", $scope.files.name)
+    User.updateProfilePhoto(objectCrop).then(function(data){
+      if(data.data.success){
+        var toast = $mdToast.simple()
+                .textContent('Photo saved')
+                .action('OK')
+                .highlightAction(true)
+                .position('left');
+                $mdToast.show(toast);
+      } else {
+        Toaster.toastErrorMessage($scope, 'Error saving photo.');
+      }
+    })
+  }
+  else {
+    $scope.loading = false;
+  }
+};
+//end of uploadPhoto
+
+
+
 
   app.disabled = undefined;
   app.searchEnabled = undefined;
@@ -214,11 +267,11 @@ angular.module('statusController',['userServices','authServices'])
   $scope.loading = false;
   $scope.uploadPhoto = null;
   $scope.croppedPhoto = null;
+
   $scope.readFileImg = function(files){
   $scope.uploadPhoto = null;
   $scope.croppedPhoto = null;
   $scope.photo = null;
-
   if (files && files.length) { //this part is just pass a file and update a scope with a new file
     var readImgCallback = function(err, img){
       $scope.loading = false;
@@ -229,7 +282,6 @@ angular.module('statusController',['userServices','authServices'])
       });
     };
     $scope.loading = true;
-
     ImageService.readImageFile(files[0], readImgCallback);
   }
 };
@@ -276,6 +328,9 @@ $scope.upload = function () {
     //   reader.readAsDataURL(file);
     // };
     // angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+
+})
+.controller('updateprofileCtrl', function(User,$scope,$routeParams,$timeout,$location){
 
 })
 .controller('updateTalkCtrl', function(User,$scope,$routeParams,$timeout,$location){

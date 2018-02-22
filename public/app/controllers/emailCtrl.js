@@ -9,12 +9,12 @@ angular.module('emailController',['userServices'])
             app.successMsg = data.data.message;
             $timeout(function () {
                 $location.path('/login')
-            },3000)
+            },0)
         } else {
             app.errorMsg = data.data.message;
             $timeout(function () {
                 $location.path('/login')
-            },3000)
+            },0)
         }
     })
 })
@@ -108,7 +108,7 @@ angular.module('emailController',['userServices'])
         } else {
             app.errorMsg = data.data.message;
         }
-        
+
     })
 
     app.resetPassword = function (passwordData, valid, confirmed) {

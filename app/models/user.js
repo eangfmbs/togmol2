@@ -38,7 +38,7 @@ var userSchema = new Schema({
     username: {type: String, lowercase: true, required: true, unique: true, validate: usernameValidator},
     email: {type: String, lowercase: true, required: true, unique: true, validate: emailValidator},
     password: {type: String, required: true, validate: passwordValidator, select: false},
-    profile: {type: String, required: true, default: 'dummyprofile.jpg'},
+    profile: {type: String, required: true, default: 'http://res.cloudinary.com/kit/image/upload/v1518707831/wexshb3qh0pyq5dkbaze.png'},
     activate: {type: Boolean, required: true, default: false},
     temporarytoken: {type: String, required: true},
     resettoken: {type: String, required: false},

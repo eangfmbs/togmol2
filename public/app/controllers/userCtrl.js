@@ -30,7 +30,7 @@ angular.module('userControllers',['userServices'])
                       console.log('showdata', data)
                       $timeout(function () {
                           $location.path('/');
-                      },50)
+                      },0)
                   } else {
                       appMsg.loading = false;
                       appMsg.errorMsg = data.data.message;

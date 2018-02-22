@@ -5,7 +5,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
             templateUrl: '/app/views/pages/home.html',
             controller: 'mainCtrl',
             controllerAs: 'main'
-            // authenticated: false
+            // authenticated: false //when put this it makes 'click on home won't work anymore'
         })
 
         .when('/register', {
@@ -26,6 +26,12 @@ var app = angular.module('appRoutes', ['ngRoute'])
             templateUrl: '/app/views/pages/profile.html',
             controller: 'profileCtrl',
             controllerAs: 'profile',
+            authenticated: true
+        })
+        .when('/updateprofile', {
+            templateUrl: '/app/views/pages/updateprofile.html',
+            controller: 'updateprofileCtrl',
+            controllerAs: 'updateprofile',
             authenticated: true
         })
         .when('/facebook/:token', {
@@ -125,26 +131,27 @@ var app = angular.module('appRoutes', ['ngRoute'])
 
 app.run(['$rootScope', 'Auth', '$location', 'User', function ($rootScope, Auth, $location, User) {
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
-        if(next.$$route.authenticated == true){
-            if(!Auth.isLoggedIn()){
-                event.preventDefault();
-                $location.path('/');
-            } else if(next.$$route.permission){
-                //create an endpoint to get the user permission
-                User.getPermission().then(function (data) {
-                    if(next.$$route.permission[0] !== data.data.permission){
-                        if(next.$$route.permission[1] !== data.data.permission){
-                            event.preventDefault();
-                            $location.path('/');
-                        }
-                    }
-                })
-            }
-        } else if(next.$$route.authenticated == false){
-            if(Auth.isLoggedIn()){
-                event.preventDefault();
-                $location.path('/');
-            }
-        }
+        // if(next.$$route.authenticated == true){
+        //     if(!Auth.isLoggedIn()){
+        //         event.preventDefault();
+        //         $location.path('/');
+        //     } else if(next.$$route.permission){
+        //         //create an endpoint to get the user permission
+        //         User.getPermission().then(function (data) {
+        //             if(next.$$route.permission[0] !== data.data.permission){
+        //                 if(next.$$route.permission[1] !== data.data.permission){
+        //                     event.preventDefault();
+        //                     $location.path('/');
+        //                 }
+        //             }
+        //         })
+        //     }
+        // }
+        // else if(next.$$route.authenticated == false){
+        //     if(Auth.isLoggedIn()){
+        //         event.preventDefault();
+        //         $location.path('/');
+        //     }
+        // }
     })
 }]);

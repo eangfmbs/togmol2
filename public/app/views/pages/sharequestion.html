@@ -1,4 +1,137 @@
 <div class="container">
+
+  <div class="col-lg-7 col-sm-6">
+
+          <div class="card hovercard">
+              <div class="cardheader">
+
+              </div>
+              <div class="avatar">
+                  <!-- <img alt="" src="https://lh3.googleusercontent.com/-7u4lQZKPLao/AAAAAAAAAAI/AAAAAAAAZVw/5Caf-jo14f4/photo.jpg?sz=328"> -->
+  <!-- profile image -->
+              <!-- drop box -->
+      <!-- <div ng-show="!uploadPhoto && !photo && !loading"
+        class="drop-box drop-box-container"
+        ngf-drag-over-class="drop-box-dragover"
+        ngf-change="readFileImg($files)" ngf-drop=""
+        ngf-select="" ng-model="files"
+        ngf-multiple="false"
+        ngf-allow-dir="false"
+        accept="image/*" ng-cloak="">
+        <span>Drop image or click to upload profile photo</span>
+      </div> -->
+
+      <!-- current user photo -->
+      <!-- <div class="photo-shadow" ng-show="photo" ng-cloak="">
+        <img class="photo-img"
+          ng-src="{{croppedPhoto}}">
+      </div> -->
+<div><img ng-src="{{croppedPhoto}}" /></div>
+      <!--progress-->
+      <!-- <div class="drop-box-container" ng-show="loading" ng-cloak="">
+        <div class="wrap">
+          <md-progress-circular class="md-hue-2" ng-show="!loading" md-mode="indeterminate" style="margin: auto;">
+          </md-progress-circular>
+        </div>
+      </div> -->
+      <!--Img Crop-->
+    <img-crop ng-show="uploadPhoto && !loading && !profile.photo" image="uploadPhoto"
+      result-image="croppedPhoto"
+      area-type="square" ngf-accept="'image/*'" result-image-size="500"
+      class="drop-box-container" ng-cloak="">
+    </img-crop>
+    <!--Save-->
+    <md-button ng-show="uploadPhoto && !loading && !profile.photo"
+      ng-disabled="loading" ng-click="upload()"
+      class="md-raised submit-button md-accent button-center block"
+      ng-cloak="">Save Photo</md-button>
+    <!--Reset-->
+    <md-button
+      ngf-select="" ngf-change="readFileImg($files)"
+      ngf-select="" ng-model="files"
+      ngf-multiple="false"
+      ngf-allow-dir="false"
+      accept="image/*" ng-cloak=""
+      class="md-flat submit-button button-center"
+      ng-cloak="">Change Photo</md-button>
+
+  <!--end profile -->
+
+              </div><br />
+              <div class="info">
+                  <div class="title">
+                      {{username}}
+                  </div>
+                  <div class="desc"><a href="/updateprofile">update profile</a></div>
+                  <div class="desc">Curious developer</div>
+                  <div class="desc">Tech geek</div>
+              </div>
+              <div class="bottom">
+                  <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
+                      <i class="fa fa-twitter"></i>
+                  </a>
+                  <a class="btn btn-danger btn-sm" rel="publisher"
+                     href="https://plus.google.com/+ahmshahnuralam">
+                      <i class="fa fa-google-plus"></i>
+                  </a>
+                  <a class="btn btn-primary btn-sm" rel="publisher"
+                     href="https://plus.google.com/shahnuralam">
+                      <i class="fa fa-facebook"></i>
+                  </a>
+                  <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                      <i class="fa fa-behance"></i>
+                  </a>
+              </div>
+          </div>
+
+
+
+
+
+
+  <form ng-submit = "talk.postComment(commentData)" novalidate>
+    <md-card>
+      <div style="padding:20px 20px 0 20px">
+        <md-input-container class="md-block">
+              <label>អ្នកគិតយ៉ាងណាដែរ..</label>
+              <textarea  name="comment"
+               ng-model = talk.commentData.comment
+               maxlength="2000"
+               rows="4"
+               md-select-on-focus>
+
+             </textarea>
+             <!-- current user photo -->
+             <div class="photo-shadow" ng-show="photo" ng-cloak="">
+               <img class="photo-img"
+                 ng-src="{{croppedPhoto}}">
+             </div>
+        </md-input-container>
+
+
+
+      </div>
+      <div style="padding:0px 17px 0 0; margin: -37px 0 0 0">
+        <md-card-actions layout="row" layout-align="start center">
+          <md-card-icon-actions>
+            <md-button
+              ngf-select="" ngf-change="readFileImg($files)"
+              ngf-select="" ng-model="files"
+              ngf-multiple="false"
+              ngf-allow-dir="false"
+              accept="image/*" ng-cloak=""
+              class="md-flat submit-button button-center"
+              ng-cloak="">
+              image
+            </md-button>
+          </md-card-icon-actions>
+          <md-button class="md-raised" notification-text="talk.text" notification-title="talk.commentData.comment" type="submit">Post</md-button>
+        </md-card-actions>
+      </div>
+    </md-card>
+  </form>
+
+
   <h2>Form control: textarea</h2>
   <form ng-submit="ask.askQuestion(askData)" novalidate>
     <div class="form-group">

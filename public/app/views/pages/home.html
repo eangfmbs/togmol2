@@ -66,7 +66,7 @@
 
   <div class="row">
     <div class="col-lg-7 col-sm-6">
-      <div class="list-group">
+      <div class="list-group" infinite-scroll='main.nextPage()' infinite-scroll-disabled='main.busy' infinite-scroll-distance='1'>
         <a href="/talk/{{status._id}}" ng-repeat = "status in main.allStatus track by $index" class="list-group-item list-group-item-action flex-column align-items-start">
           <div class="d-flex w-100 justify-content-between">
             <span class="badge badge-light pull-right"><i class="glyphicon glyphicon-retweet"></i>. {{status.totalcomment}}</span>
@@ -75,6 +75,7 @@
             <h6><span class="label label-danger" ng-repeat = "tag in status.tags">{{tag}}</span></h6>
           </div>
         </a>
+        <div ng-show='main.busy'>Loading data...</div>
       </div>
     </div>
     <div class="col-lg-5 col-sm-6" style="background-color:lavender;">Profile Goes Here</div>
