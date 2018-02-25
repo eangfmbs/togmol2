@@ -154,9 +154,18 @@ angular.module('mainControllers', ['authServices'])
   User.onloadUnseenComment().then(function(data){
     if(data.data.success){
       $scope.countNotification = data.data.numberofnotify;
+      app.arrntf = data.data.ntfdata;
       console.log('number of notfiy of me: ', $scope.countNotification)
+      console.log('number of notfiy of me: ', app.arrntf)
     }
   })
+  app.clickNtf = function(){
+    User.updateNtfIsView().then(function(data){
+      if(data.data.success){
+          console.log("data update success")
+      }
+    })
+  }
 
 
 });

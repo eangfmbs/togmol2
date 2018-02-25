@@ -1331,13 +1331,12 @@ router.post('/updateProfilePhoto', function(req, res){
 //try to create notification sys
 router.post('/createnotification', function(req,res){//
   var ntf = new NTF();
+  ntf.ntftext = req.body.guesttext;
   ntf.ownertalk = req.body.ownercontent;
   ntf.actionusername = req.decoded.username;
-  ntf.ntftext = req.body.guesttext;
   ntf.statusid = req.body.statusid;
   // ntf.toke  = req.body.token
   // ntf.username = req.body.username
-  console.log('yal0000000000000000000: ',req.body.ownercontent)
   ntf.save(function(err){
     if(err){
       return handleError(err);
@@ -1356,10 +1355,27 @@ router.post('/onloadunseencomment', function (req, res) {
         if(err){
             $$MdGestureHandler(err);
         } else {
-            return res.json({success: true, numberofnotify: notify});
+            NTF.find({isview: 0, ownertalk: req.decoded.username, actionusername: { $ne: req.decoded.username }}, function(err, ntf){
+              if(err){
+                return handleError(err);
+              } else {
+                return res.json({success: true, numberofnotify: notify, ntfdata: ntf});
+              }
+            })
         }
     })
 });
+//update NTF when click on notification icon on narbar
+router.get('/updatentfisview', function(req, res){
+  console.log('click ntf and update')
+  NTF.update({isview: 0, ownertalk: req.decoded.username, actionusername: { $ne: req.decoded.username }},{ isview: 1 }, { multi: true }, function(err, updatentf){
+    if(err){
+      return handleError(err);
+    } else {
+      return res.json({success: true});
+    }
+  })
+})
 
 })// end of socketio
 

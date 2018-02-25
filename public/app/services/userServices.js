@@ -155,6 +155,10 @@ angular.module('userServices',[])
     userFactory.onloadUnseenComment = function () {
         return $http.post('/api/onloadunseencomment');
     };
+    // User.updateNtfIsView in mainCtrl
+    userFactory.updateNtfIsView = function(){
+      return $http.get('/api/updatentfisview');
+    }
 
     //User.updateProfilePhoto(imageCrop)
     userFactory.updateProfilePhoto = function(croppedPhoto){

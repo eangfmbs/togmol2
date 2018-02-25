@@ -422,9 +422,9 @@ $scope.upload = function () {
         loadComment();
 
         Socket.emit("add-user", {"username": data.data.commentor});
-
+        console.log('this comment Data: ', app.commentData)
         var objectNTF = {};
-        objectNTF.guesttext = 'guesttext';
+        objectNTF.guesttext = app.commentData.comment;
         objectNTF.ownercontent = $scope.userDecode;
         objectNTF.guestaction = data.data.commentor;
         objectNTF.statusid  = $routeParams.id;

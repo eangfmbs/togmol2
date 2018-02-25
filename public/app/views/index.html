@@ -267,7 +267,8 @@
         });
 
         $('#notifications').click(function () {
-            return false;       // DO NOTHING WHEN CONTAINER IS CLICKED.
+            $('noti_Counter').html('');
+            // return false;       // DO NOTHING WHEN CONTAINER IS CLICKED.
         });
     });
 </script>
@@ -315,17 +316,16 @@ socketNTF.on('notification', function(notification){
                     </div><!-- /.navbar-collapse -->
                     <ul class="nino-iconsGroup nav navbar-nav">
                       <li id="noti_Container"><a href="#"><div id="noti_Counter">{{countNotification}}</div>
-                          <div id="noti_Button"></div>
+                          <div id="noti_Button" ng-click="main.clickNtf()"></div>
                           <div id="notifications">
                               <div class="notification-header">Notifications</div>
-                              <div style="height:250px;"><ul>
-                                <li>
-                                  hello world {{countNotification}}
-                                </li>
-                                <li>
-                                  hello world {{countNotification}}
-                                </li>
-                              </ul></div>
+                                  <div style="height:250px;">
+                                    <ul ng-repeat="ntf in main.arrntf track by $index">
+                                      <li>
+                                        {{ntf.actionusername}} {{ntf.ntftext}}
+                                      </li>
+                                  </ul>
+                                </div>
                               <div class="seeAll"><a href="#">See All</a></div>
                           </div>
                         </a>
