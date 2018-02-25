@@ -149,7 +149,12 @@ angular.module('userServices',[])
     //User.updateComment
     userFactory.updateComment = function(){
       return $http.put('/api/updateCommnent');
-    }
+    };
+
+    // User.onloadUnseenComment in mainCtrl
+    userFactory.onloadUnseenComment = function () {
+        return $http.post('/api/onloadunseencomment');
+    };
 
     //User.updateProfilePhoto(imageCrop)
     userFactory.updateProfilePhoto = function(croppedPhoto){
@@ -169,7 +174,7 @@ angular.module('userServices',[])
   };
 
   //User.createnotification(data)
-  userFactory.notficationAlert = function(ownercontent){
+  userFactory.createNotificatoin = function(ownercontent){
     return $http.post('/api/createnotification', ownercontent);
   }
 

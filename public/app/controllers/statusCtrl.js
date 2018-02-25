@@ -421,19 +421,19 @@ $scope.upload = function () {
         console.log('this comment Data: ', data.data)
         loadComment();
 
-
         Socket.emit("add-user", {"username": data.data.commentor});
-
 
         var objectNTF = {};
         objectNTF.guesttext = 'guesttext';
-        objectNTF.ownercontent = $scope.ownercontent;
-        console.log('ownercontent', $scope.ownercontent)
-        // User.notficationAlert(objectNTF).then(function(data){
-        //   if(data.data.success){
-        //     console.log('notficationAlert save!')
-        //   }
-        // })
+        objectNTF.ownercontent = $scope.userDecode;
+        objectNTF.guestaction = data.data.commentor;
+        objectNTF.statusid  = $routeParams.id;
+        console.log('ownercontent', $scope.userDecode)
+        User.createNotificatoin(objectNTF).then(function(data){
+          if(data.data.success){
+            console.log('notficationAlert save!')
+          }
+        })
       }
        else {
         app.errorMsg = data.data.message;

@@ -3,9 +3,6 @@ angular.module('mainControllers', ['authServices'])
     var app = this;
     app.busy = false;
     var allTalkData = [];
-    var step = 2;
-    var page = 0;
-    var length = 0;
     app.loadingContent = false; //don't show html part of angular until it finish loading data
     //this will help preventing user to see any content that surrounding data of angular syntax like {{..}}
 
@@ -153,4 +150,13 @@ angular.module('mainControllers', ['authServices'])
       }
     }.bind(this)); //can elimiinate the .bind(this)
   };
+
+  User.onloadUnseenComment().then(function(data){
+    if(data.data.success){
+      $scope.countNotification = data.data.numberofnotify;
+      console.log('number of notfiy of me: ', $scope.countNotification)
+    }
+  })
+
+
 });

@@ -1306,7 +1306,9 @@ router.put('/removesubmaincomment', function(req, res){
       })
     }
   }
-})
+});
+
+
 
 //Post also and Update Profile Photo
 router.post('/updateProfilePhoto', function(req, res){
@@ -1329,8 +1331,10 @@ router.post('/updateProfilePhoto', function(req, res){
 //try to create notification sys
 router.post('/createnotification', function(req,res){//
   var ntf = new NTF();
-  ntf.username = req.body.ownercontent;
+  ntf.ownertalk = req.body.ownercontent;
+  ntf.actionusername = req.decoded.username;
   ntf.ntftext = req.body.guesttext;
+  ntf.statusid = req.body.statusid;
   // ntf.toke  = req.body.token
   // ntf.username = req.body.username
   console.log('yal0000000000000000000: ',req.body.ownercontent)
@@ -1344,7 +1348,18 @@ router.post('/createnotification', function(req,res){//
     }
   })
 
-})
+});
+
+//fetch for count of notify
+router.post('/onloadunseencomment', function (req, res) {
+    NTF.count({isview: 0, ownertalk: req.decoded.username, actionusername: { $ne: req.decoded.username }}, function(err, notify){
+        if(err){
+            $$MdGestureHandler(err);
+        } else {
+            return res.json({success: true, numberofnotify: notify});
+        }
+    })
+});
 
 })// end of socketio
 
