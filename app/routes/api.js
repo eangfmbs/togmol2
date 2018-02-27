@@ -1067,7 +1067,7 @@ module.exports = function (router, io) {
                       if(err){
                         return res.json({success: false, message: 'Something wrong when you try to unlike it'})
                       } else {
-                        return res.json({success: true, message: 'You have just change your mind to like it'});
+                        return res.json({success: true, message: 'You have just change your mind to unlike it', liketalk: false});
                       }
                     })
                   } else {
@@ -1082,7 +1082,7 @@ module.exports = function (router, io) {
                         return handleError(err);
                         // return res.json({success: false, message: 'Something when wrong! please check your connection'})
                       } else {
-                        return res.json({success: true, message: 'You just like this content'})
+                        return res.json({success: true, message: 'You just like this content', liketalk: true})
                       }
                     })
                   }
@@ -1116,33 +1116,64 @@ module.exports = function (router, io) {
                 if(!user){
                   return res.json({success: false, message: "Seem you don't have acount yet. how could you try to vote"})
                 } else {
-                  if(status.comments[req.body.indexOfComment].voteby.includes(user.username)){
-                    status.comments[req.body.indexOfComment].vote--;
-                    const arrayIndex = status.comments[req.body.indexOfComment].voteby.indexOf(user.username);
-                    status.comments[req.body.indexOfComment].voteby.splice(arrayIndex, 1);
-                    status.save(function(err){
-                      if(err){
-                        return res.json({success: false, message: 'Something wrong when you try to unvote it'})
-                      } else {
-                        return res.json({success: true, message: 'You have just change your mind to unvote it'});
-                      }
-                    })
-                  } else {
-                    status.comments[req.body.indexOfComment].vote++;
-                    console.log('the data of vote if have not voted yet: ', status.comments[req.body.indexOfComment].vote)
-                    console.log('the data of vote if have not voted yet: ', user.username)
+                  if(user.username == status.comments[req.body.indexOfComment].commentator){
+                    if(status.comments[req.body.indexOfComment].voteby.includes(user.username)){
+                      status.comments[req.body.indexOfComment].vote--;
+                      const arrayIndex = status.comments[req.body.indexOfComment].voteby.indexOf(user.username);
+                      status.comments[req.body.indexOfComment].voteby.splice(arrayIndex, 1);
+                      status.save(function(err){
+                        if(err){
+                          return res.json({success: false, message: 'Something wrong when you try to unvote it'})
+                        } else {
+                          return res.json({success: true, message: 'You have just change your mind to unvote it', ismainvote: false ,ownercomment:status.comments[req.body.indexOfComment].commentator});
+                        }
+                      })
+                    } else {
+                      status.comments[req.body.indexOfComment].vote++;
+                      console.log('the data of vote if have not voted yet: ', status.comments[req.body.indexOfComment].vote)
+                      console.log('the data of vote if have not voted yet: ', user.username)
 
-                    status.comments[req.body.indexOfComment].voteby.push(user.username);
-                    console.log('the vote by: ', status.comments[req.body.indexOfComment].voteby)
-                    status.save(function(err){
-                      if(err){
-                        return handleError(err);
-                        // return res.json({success: false, message: 'Something when wrong! please check your connection'})
-                      } else {
-                        return res.json({success: true, message: 'You voted this comment'})
-                      }
-                    })
+                      status.comments[req.body.indexOfComment].voteby.push(user.username);
+                      console.log('the vote by: ', status.comments[req.body.indexOfComment].voteby)
+                      status.save(function(err){
+                        if(err){
+                          return handleError(err);
+                          // return res.json({success: false, message: 'Something when wrong! please check your connection'})
+                        } else {
+                          return res.json({success: true, message: 'You voted this comment',ismainvote: false, ownercomment:status.comments[req.body.indexOfComment].commentator})
+                        }
+                      })
+                    }
+                  } else {
+                    if(status.comments[req.body.indexOfComment].voteby.includes(user.username)){
+                      status.comments[req.body.indexOfComment].vote--;
+                      const arrayIndex = status.comments[req.body.indexOfComment].voteby.indexOf(user.username);
+                      status.comments[req.body.indexOfComment].voteby.splice(arrayIndex, 1);
+                      status.save(function(err){
+                        if(err){
+                          return res.json({success: false, message: 'Something wrong when you try to unvote it'})
+                        } else { //is mainvote use to check for alert notification tha it should alert or not in this case
+                          return res.json({success: true, message: 'You have just change your mind to unvote it', ismainvote: false, ownercomment:status.comments[req.body.indexOfComment].commentator});
+                        }
+                      })
+                    } else {
+                      status.comments[req.body.indexOfComment].vote++;
+                      console.log('the data of vote if have not voted yet: ', status.comments[req.body.indexOfComment].vote)
+                      console.log('the data of vote if have not voted yet: ', user.username)
+
+                      status.comments[req.body.indexOfComment].voteby.push(user.username);
+                      console.log('the vote by: ', status.comments[req.body.indexOfComment].voteby)
+                      status.save(function(err){
+                        if(err){
+                          return handleError(err);
+                          // return res.json({success: false, message: 'Something when wrong! please check your connection'})
+                        } else {
+                          return res.json({success: true, message: 'You voted this comment', ismainvote: true, ownercomment:status.comments[req.body.indexOfComment].commentator})
+                        }
+                      })
+                    }
                   }
+
                 }
               }
             })
@@ -1221,32 +1252,62 @@ router.put('/votesubmaincomment', function(req, res){
                 if(!user){
                   return res.json({success: false, message: "Seem you don't have acount yet. how could you try to vote"})
                 } else {
-                  if(status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.includes(user.username)){
-                    status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote--;
-                    const arrayIndex = status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.indexOf(user.username);
-                    status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.splice(arrayIndex, 1);
-                    status.save(function(err){
-                      if(err){
-                        return res.json({success: false, message: 'Something wrong when you try to unvote it'})
-                      } else {
-                        return res.json({success: true, message: 'You have just change your mind to unvote it'});
-                      }
-                    })
-                  } else {
-                    status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote++;
-                    console.log('the data of vote if have not voted yet: ', status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote)
-                    console.log('the data of vote if have not voted yet: ', user.username)
+                  if(user.username == status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].commentator){
+                    if(status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.includes(user.username)){
+                      status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote--;
+                      const arrayIndex = status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.indexOf(user.username);
+                      status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.splice(arrayIndex, 1);
+                      status.save(function(err){
+                        if(err){
+                          return res.json({success: false, message: 'Something wrong when you try to unvote it'})
+                        } else {
+                          return res.json({success: true, message: 'You have just change your mind to unvote it', issubmainvote: false, ownersubcomment:status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].commentator});
+                        }
+                      })
+                    } else {
+                      status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote++;
+                      console.log('the data of vote if have not voted yet: ', status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote)
+                      console.log('the data of vote if have not voted yet: ', user.username)
 
-                    status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.push(user.username);
-                    console.log('the vote by: ', status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby)
-                    status.save(function(err){
-                      if(err){
-                        return handleError(err);
-                        // return res.json({success: false, message: 'Something when wrong! please check your connection'})
-                      } else {
-                        return res.json({success: true, message: 'You voted this comment'})
-                      }
-                    })
+                      status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.push(user.username);
+                      console.log('the vote by: ', status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby)
+                      status.save(function(err){
+                        if(err){
+                          return handleError(err);
+                          // return res.json({success: false, message: 'Something when wrong! please check your connection'})
+                        } else {
+                          return res.json({success: true, message: 'You voted this comment', issubmainvote: false, ownersubcomment:status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].commentator})
+                        }
+                      })
+                    }
+                  } else {
+                    if(status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.includes(user.username)){
+                      status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote--;
+                      const arrayIndex = status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.indexOf(user.username);
+                      status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.splice(arrayIndex, 1);
+                      status.save(function(err){
+                        if(err){
+                          return res.json({success: false, message: 'Something wrong when you try to unvote it'})
+                        } else {
+                          return res.json({success: true, message: 'You have just change your mind to unvote it', issubmainvote: false, ownersubcomment:status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].commentator});
+                        }
+                      })
+                    } else {
+                      status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote++;
+                      console.log('the data of vote if have not voted yet: ', status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].vote)
+                      console.log('the data of vote if have not voted yet: ', user.username)
+
+                      status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby.push(user.username);
+                      console.log('the vote by: ', status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].voteby)
+                      status.save(function(err){
+                        if(err){
+                          return handleError(err);
+                          // return res.json({success: false, message: 'Something when wrong! please check your connection'})
+                        } else {
+                          return res.json({success: true, message: 'You voted this comment', issubmainvote: true, ownersubcomment:status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment].commentator})
+                        }
+                      })
+                    }
                   }
                 }
               }
@@ -1331,6 +1392,7 @@ router.post('/updateProfilePhoto', function(req, res){
 //try to create notification sys
 router.post('/createnotification', function(req,res){//
   var ntf = new NTF();
+  //also need to check if all this think black
   ntf.ntftext = req.body.guesttext;
   ntf.ownertalk = req.body.ownercontent;
   ntf.actionusername = req.decoded.username;

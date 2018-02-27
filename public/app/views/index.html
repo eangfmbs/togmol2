@@ -315,7 +315,7 @@ socketNTF.on('notification', function(notification){
                         </ul>
                     </div><!-- /.navbar-collapse -->
                     <ul class="nino-iconsGroup nav navbar-nav">
-                      <li id="noti_Container"><a href="#"><div id="noti_Counter">{{countNotification}}</div>
+                      <li id="noti_Container"><a href="#"><div id="noti_Counter">{{(countNotification==0)?'':countNotification}}</div>
                           <div id="noti_Button" ng-click="main.clickNtf()"></div>
                           <div id="notifications">
                               <div class="notification-header">Notifications</div>

@@ -461,14 +461,27 @@ $scope.upload = function () {
 //like talk topic
     app.clickLikeTalk = function (id) {
       User.likeContent(id).then(function(data){
+        app.islike = data.data.liketalk
         if(data.data.success){
-          console.log("user just like/unlike the content");
           User.refreshWhenClickLike($routeParams.id).then(function(data){
             if(data.data.success){
               app.enabledEdit = data.data.enabledEdit;
               app.status = data.data.talk;
               app.userDecode = data.data.usernameNow;
               app.totallike = data.data.like;
+              console.log('now you are on like', app.islike)
+              if(app.islike){
+                var objectNTF = {};
+                objectNTF.guesttext = 'liked Talk';
+                objectNTF.ownercontent = app.status.username;
+                objectNTF.guestaction = app.userDecode;
+                objectNTF.statusid  = $routeParams.id;
+                User.createNotificatoin(objectNTF).then(function(data){
+                  if(data.data.success){
+                    console.log('notficationAlert save!')
+                  }
+                })
+              }
             } else {
               app.enabledEdit = data.data.enabledEdit;
               app.errorMsg = true;
@@ -487,11 +500,23 @@ $scope.upload = function () {
       objectComment.statusid = $routeParams.id;
       objectComment.indexOfComment = indexComment;
       objectComment.maincommentid = commentID;
-      console.log('this is Data from ui commen vote click: ',objectComment)
-
           User.voteMainComment(objectComment).then(function(data){
             if(data.data.success){
               loadComment();
+              console.log('status of ismainvote: ', data.data.ismainvote)
+              if(data.data.ismainvote){
+                var objectNTF = {};
+                objectNTF.guesttext = 'vote main Talk';
+                objectNTF.ownercontent = data.data.ownercomment;
+                objectNTF.guestaction = $scope.userDecode;
+                objectNTF.statusid  = $routeParams.id;
+                console.log('data when vote: ', objectNTF)
+                User.createNotificatoin(objectNTF).then(function(data){
+                  if(data.data.success){
+                    console.log('notficationAlert save!')
+                  }
+                })
+              }
             }
           })
     }
@@ -557,7 +582,20 @@ $scope.upload = function () {
         User.voteOnSubComment(objectForSubComment).then(function(data){
           if(data.data.success){
             loadComment();
-            console.log("You just vote the sub comment");
+            console.log('status of ismainvote: ', data.data.ismainvote)
+            if(data.data.issubmainvote){
+              var objectNTF = {};
+              objectNTF.guesttext = 'vote sub main Talk';
+              objectNTF.ownercontent = data.data.ownersubcomment;
+              objectNTF.guestaction = $scope.userDecode;
+              objectNTF.statusid  = $routeParams.id;
+              console.log('data when vote: ', objectNTF)
+              User.createNotificatoin(objectNTF).then(function(data){
+                if(data.data.success){
+                  console.log('notficationAlert save!')
+                }
+              })
+            }
           } else {
             console.log("Got a problem when attemp to vote a subcomment")
           }
