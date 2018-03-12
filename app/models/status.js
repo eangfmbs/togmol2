@@ -22,6 +22,7 @@ var statusSchema = new Schema({
       profile: {type: String, required: true, default: 'http://res.cloudinary.com/kit/image/upload/v1518707831/wexshb3qh0pyq5dkbaze.png'},
       comment: {type: String, required: false},
       commentator: {type: String, required: true},
+      totalcomment: {type: Number, required: false, default: 1}, //default 1 is mean that we are alr add 1 point/comment for maincoment it will use whil we are delete maincomment and decrease total ans
       date: {type: Date, required: true, default: Date.now},
       vote: {type: Number, required: false, default: 0},
       voteby: {type: Array, required: false},

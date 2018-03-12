@@ -39,7 +39,7 @@
         <md-card-actions layout="row" layout-align="start center" style="padding: 0 15px 0 3px; margin: -15px 0 0 0;">
           <md-card-header>
           <md-card-avatar>
-            <img class="md-user-avatar" ng-src="{{profile}}"/>
+            <img class="md-user-avatar" ng-src="{{talk.status.profile}}"/>
           </md-card-avatar>
           <md-card-header-text><a href="/profile/{{talk.status.username}}">
             <span class="md-title">{{talk.status.username}}</span>
@@ -110,7 +110,7 @@
           <!-- <img ng-src="{{imagePath}}" class="md-card-image" alt="Washed Out"> -->
           <md-card-title style="margin: -17px 0 0 0;">
             <div class="lock-size" layout="row" layout-align="end center">
-            <md-fab-speed-dial style="z-index: 1" md-open="talk.isOpenOnMainComment" md-direction="down"
+            <md-fab-speed-dial style="z-index: 1" md-open="comment._id" md-direction="down"
                                ng-class="talk.selectedMode" class="md-fling">
               <md-fab-trigger>
                   <md-button class="md-icon-button" aria-label="Favorite">
@@ -118,15 +118,15 @@
                   </md-button>
               </md-fab-trigger>
               <md-fab-actions style="position: absolute; bottom: -105px;">
-                <md-button ng-show="!comment.commentator===talk.userDecode" aria-label="Reporting" class="md-fab md-raised md-mini">
+                <md-button ng-show="!comment.commentator==talk.userDecode" aria-label="Reporting" class="md-fab md-raised md-mini">
                   <img ng-src="/assets/images/togmolicon/report-content.svg" class="md-card-image" alt="report togmol"/>
                 </md-button>
-                <md-button ng-show="comment.commentator===talk.userDecode" aria-label="Update" class="md-fab md-raised md-mini" ng-click="talk.updateCommnet(comment._id)">
+                <md-button ng-show="comment.commentator==talk.userDecode" aria-label="Update" class="md-fab md-raised md-mini" ng-click="talk.updateCommnet(comment._id)">
                   <a href="/updatetalk/{{talk.status._id}}">
                     <img ng-src="/assets/images/togmolicon/update-talk.svg" class="md-card-image" alt="update"/>
                   </a>
                 </md-button>
-                <md-button ng-show="comment.commentator===talk.userDecode" aria-label="Delete" class="md-fab md-raised md-mini" ng-click="talk.deleteCommnet(comment._id, $index)">
+                <md-button ng-show="comment.commentator==talk.userDecode" aria-label="Delete" class="md-fab md-raised md-mini" ng-click="talk.deleteCommnet(comment._id, $index)">
                   <img ng-src="/assets/images/togmolicon/trash-can.svg" class="md-card-image" alt="delete"/>
                 </md-button>
               </md-fab-actions>
@@ -163,7 +163,7 @@
           <div ng-repeat = "subcomment in comment.replies">
             <md-card-title style="margin: -27px 0 0 0;">
               <div class="lock-size" layout="row" layout-align="end center">
-              <md-fab-speed-dial style="z-index: 1" md-open="talk.isOpenOnMainComment" md-direction="down"
+              <md-fab-speed-dial style="z-index: 1" md-open="sumbcomment._id" md-direction="down"
                                  ng-class="talk.selectedMode" class="md-fling">
                 <md-fab-trigger>
                     <md-button class="md-icon-button" aria-label="Favorite">
@@ -171,15 +171,15 @@
                     </md-button>
                 </md-fab-trigger>
                 <md-fab-actions style="position: absolute; bottom: -105px;">
-                  <md-button ng-show="!subcomment.commentator===talk.userDecode" aria-label="Reporting" class="md-fab md-raised md-mini">
+                  <md-button ng-show="!subcomment.commentator==talk.userDecode" aria-label="Reporting" class="md-fab md-raised md-mini">
                     <img ng-src="/assets/images/togmolicon/report-content.svg" class="md-card-image" alt="report togmol"/>
                   </md-button>
-                  <md-button ng-show="subcomment.commentator===talk.userDecode" aria-label="Update" class="md-fab md-raised md-mini" ng-click="talk.updateCommnet(subcomment._id)">
+                  <md-button ng-show="subcomment.commentator==talk.userDecode" aria-label="Update" class="md-fab md-raised md-mini" ng-click="talk.updateCommnet(subcomment._id)">
                     <a href="/updatetalk/{{talk.status._id}}">
                       <img ng-src="/assets/images/togmolicon/update-talk.svg" class="md-card-image" alt="update"/>
                     </a>
                   </md-button>
-                  <md-button ng-show="subcomment.commentator===talk.userDecode" aria-label="Delete" class="md-fab md-raised md-mini" ng-click="talk.removeSubCommnet(subcomment._id, $parent.$index, comment._id, $index)">
+                  <md-button ng-show="subcomment.commentator==talk.userDecode" aria-label="Delete" class="md-fab md-raised md-mini" ng-click="talk.removeSubCommnet(subcomment._id, $parent.$index, comment._id, $index)">
                     <img ng-src="/assets/images/togmolicon/trash-can.svg" class="md-card-image" alt="delete"/>
                   </md-button>
                 </md-fab-actions>

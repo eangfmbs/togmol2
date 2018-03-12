@@ -896,6 +896,7 @@ module.exports = function (router, io) {
                       return res.json("You need to register to our website first so that you can comment next time!");
                     } else {
                       status.totalcomment++;
+                      status.comments[req.body.indexOfMainComment].totalcomment++;
                       status.comments[req.body.indexOfMainComment].replies.push({
                         comment: req.body.subcomment,
                         commentator: user.username,
@@ -906,7 +907,7 @@ module.exports = function (router, io) {
                           return res.json({success: false, message: "Something when wrong when save data to the db"});
                         } else {
                           console.log("this is form of status: ", cmmdata)
-                          return res.json({success: true, commentor:user.username, message: 'You post a comment!', numberOfComment:status.totalcomment})
+                          return res.json({success: true, commentor:user.username, ownermaincomment:status.comments[req.body.indexOfMainComment].commentator, message: 'You post a comment!', numberOfComment:status.totalcomment})
                         }
                       })
                     }
@@ -1207,9 +1208,8 @@ router.put('/removemaincomment', function(req, res){
                 console.log('make id from select goes here', req.body.maincommentid)
 
                 if(status.comments[req.body.indexOfComment]._id==req.body.maincommentid){
+                  status.totalcomment -=status.comments[req.body.indexOfComment].totalcomment;
                   status.comments.splice(req.body.indexOfComment, 1);
-                  console.log('make sure remove mainc goes here 222222222')
-
                   status.save(function(err){
                     if(err){
                       return res.json({success: false, message: 'Something wrong when you try to unvote it'})
@@ -1348,7 +1348,7 @@ router.put('/removesubmaincomment', function(req, res){
                   if(status.comments[req.body.indexOfMainComment].replies[req.body.indexOfSubMainComment]._id==req.body.subcommentid){
                     status.comments[req.body.indexOfMainComment].replies.splice(req.body.indexOfSubMainComment, 1);
                     console.log('make sure remove mainc goes here 222222222')
-
+                    status.totalcomment--;
                     status.save(function(err){
                       if(err){
                         return res.json({success: false, message: 'Something wrong when you try to unvote it'})
@@ -1435,6 +1435,26 @@ router.get('/updatentfisview', function(req, res){
       return handleError(err);
     } else {
       return res.json({success: true});
+    }
+  })
+})
+//update score for owner maincomment table when maincomment is voted by otherwise
+router.get('/updateusercollectingscore', function(req, res){
+  console.log('the data of ownercomment: ',req.body.ownercomment)
+  console.log('the data of ownercomment: ',ownercomment)
+  console.log('the data of ownercomment: ',req.body.ownercomment)
+  User.findOne({username: req.body.ownercomment},function(err, user){
+    if(err){
+      return handleError(err);
+    } else {
+      user.collectingscore++;
+      user.save(function(err){
+        if(err){
+          return handleError(err);
+        } else {
+          return res.json({success: true})
+        }
+      })
     }
   })
 })

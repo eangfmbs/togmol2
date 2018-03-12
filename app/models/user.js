@@ -44,6 +44,8 @@ var userSchema = new Schema({
     resettoken: {type: String, required: false},
     permission: {type: String, required: true, default: 'user'},
     date: { type: Date, required: true, default: Date.now },
+    collectingscore: {type: Number, required: true, default: 0},
+    hitstatusscore: {type: Number, required: true, default: 0}
 });
 
 userSchema.pre('save', function(next) {

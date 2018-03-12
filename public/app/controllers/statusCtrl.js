@@ -1,4 +1,4 @@
-angular.module('statusController',['userServices','authServices'])
+angular.module('statusController',['userServices','authServices','appRoutes'])
 .controller('askCtrl', function(User, $scope, $timeout, $mdToast, ImageService, $location){
   var app = this;
   app.arrTag = [];
@@ -370,8 +370,7 @@ $scope.upload = function () {
 //         'socialshareUrl': 'http://720kb.net'
 //       }
 //     })
-.controller('talkCtrl', function(User, Socket, $scope, $timeout, $location, $routeParams){
-
+.controller('talkCtrl', function(User, $window, Socket, $scope, $timeout, $location, $routeParams){
   var app = this;
   app.title = "Hello Eang";
   app.text = "Some content goes here!";
@@ -380,6 +379,8 @@ $scope.upload = function () {
     if(data.data.success){
       app.enabledEdit = data.data.enabledEdit;
       app.status = data.data.talk;
+      app.title = data.data.talk.title;
+      console.log("title of content: ", app.title)
       $scope.userDecode = data.data.talk.username;
       $scope.profile = data.data.profile_pic;
       console.log('this talk profile: ', $scope.profile)
@@ -397,7 +398,6 @@ $scope.upload = function () {
       // this.bottomDirections = ['down', 'right'];
 
       this.isOpen = false;
-      this.isOpenOnMainComment = false;
 
       // this.availableModes = ['md-fling', 'md-scale'];
       this.selectedMode = 'md-scale';
@@ -494,7 +494,7 @@ $scope.upload = function () {
       })
     }
 
-    //like comment status
+    //like Main Comment status
     app.clickVoteComment = function(commentID, indexComment){
       var objectComment = {};
       objectComment.statusid = $routeParams.id;
@@ -504,7 +504,16 @@ $scope.upload = function () {
             if(data.data.success){
               loadComment();
               console.log('status of ismainvote: ', data.data.ismainvote)
-              if(data.data.ismainvote){
+              if(data.data.ismainvote){ //ismainvote use to make notification in case guest like that main comment it will create notification.
+                //update score for the main comment user****(but is should outside this scope)
+                // var objectCollectingMainVote = {};
+                // console.log('the datlll:', data.data.ownercomment);
+                User.updateUserCollectingScore(data.data.ownercomment).then(function(data){
+                  if(data.data.success){
+                    console.log('update main comment user score');
+                  }
+                })
+                //create notification part
                 var objectNTF = {};
                 objectNTF.guesttext = 'vote main Talk';
                 objectNTF.ownercontent = data.data.ownercomment;
@@ -544,9 +553,12 @@ $scope.upload = function () {
       objectMainComment.indexOfComment = indexMainComment;
       User.removeMainComment(objectMainComment).then(function(data){
         if(data.data.success){
-          $timeout(function(){
-            $location.path('/')
-          }, 0)
+          console.log(data.data.statusid)
+          loadComment();
+          // $timeout(function(){
+          //   $window.location = $window.location.protocol+'//'+$window.location.host+'/talk/'+data.data.statusid
+          //   // $location.path('/talk/'+data.data.statusid)
+          // }, 0)
         } else {
           app.errorMsg = data.data.message;
         }
@@ -556,16 +568,27 @@ $scope.upload = function () {
     //postSubComment
     app.postSubComment = function(commentData, indexOfMainComment){ //if commentData is an object we will use app.
       var statusID = $routeParams.id;
-      console.log("index of main comment: ", indexOfMainComment)
-      console.log("main comment: ", commentData)
-
       var objectForSubComment = {};
       objectForSubComment.subcomment = commentData;
       objectForSubComment.indexOfMainComment = indexOfMainComment;
       User.postSubComment(statusID, objectForSubComment).then(function(data){
         if(data.data.success){
           loadComment();
-          console.log("you just post a new subcomment")
+          var objectNTF = {};
+          objectNTF.guesttext = "comment on subcomment";
+          objectNTF.ownercontent = $scope.userDecode;
+          objectNTF.guestaction = data.data.commentor;
+          objectNTF.ownermaincomment = data.data.ownermaincomment;
+          objectNTF.statusid  = $routeParams.id;
+          console.log('ownercontent', $scope.userDecode)
+          console.log('ownermaincomment: ',data.data.ownermaincomment)
+          console.log('guestaction', data.data.commentor)
+
+          User.createNotificatoin(objectNTF).then(function(data){
+            if(data.data.success){
+              console.log('notficationAlert save!')
+            }
+          })
         }
       })
     }

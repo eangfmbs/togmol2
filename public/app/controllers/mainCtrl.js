@@ -1,7 +1,6 @@
 angular.module('mainControllers', ['authServices'])
 .controller('mainCtrl', function (Auth,$timeout,$location,$scope,$rootScope,$interval,$window,User) {
     var app = this;
-    app.busy = false;
     var allTalkData = [];
     app.loadingContent = false; //don't show html part of angular until it finish loading data
     //this will help preventing user to see any content that surrounding data of angular syntax like {{..}}
@@ -68,19 +67,20 @@ angular.module('mainControllers', ['authServices'])
                 app.loadingContent = true;
             });
             // console.log("User is on login");
-        } else {
+        }
+        else {
           //add one
             // app.authorized = true; kou mean ort just dak on 2/22/2018
             app.isLoggedIn = false;//use to show login tab when we are in login
             app.username = '';
             app.loadingContent = true;
-            User.getAllStatus().then(function(data){
-              if(data.data.success){
-                    app.allStatus = data.data.status
-              } else {
-                app.errorMsg = data.data.message;
-              }
-            })
+            // User.getAllStatus().then(function(data){
+            //   if(data.data.success){
+            //         app.allStatus = data.data.status
+            //   } else {
+            //     app.errorMsg = data.data.message;
+            //   }
+            // })
 
         }
         if($location.hash()==='_=_') $location.hash(null);
@@ -160,7 +160,7 @@ angular.module('mainControllers', ['authServices'])
         console.log('number of notfiy of me: ', app.arrntf)
     }
   })
-  
+
   app.clickNtf = function(){
     User.updateNtfIsView().then(function(data){
       if(data.data.success){

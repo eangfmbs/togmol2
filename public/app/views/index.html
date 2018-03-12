@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="userApp">
 <head>
     <base href="/">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -7,14 +7,15 @@
     <meta name="description" content="">
     <meta name="author" content="ninodezign.com, ninodezign@gmail.com">
     <meta name="copyright" content="ninodezign.com">
-    <title>togmol</title>
+    <title ng-bind="title"></title>
+
     <style>
     .cropArea {
       background: #E4E4E4;
       overflow: hidden;
-      width:150px;
-      height:150px;
-      border-radius: 50%;
+      width:550px;
+      height:550px;
+      /* border-radius: 50%; */
     }
 
 
@@ -226,7 +227,7 @@
 
 </head>
 
-<body data-target="#nino-navbar" data-spy="scroll" ng-app="userApp" ng-controller="mainCtrl as main" ng-show="main.loadingContent" ng-cloak>
+<body data-target="#nino-navbar" data-spy="scroll" ng-controller="mainCtrl as main" ng-show="main.loadingContent" ng-cloak>
   <!-- Social share controller -->
   <script src="/assets/js/angular-socialshare.js"></script>
   <!-- Notification on the narbar -->
@@ -287,7 +288,7 @@ socketNTF.on('notification', function(notification){
 ================================================== -->
 <header id="nino-header">
     <div id="nino-headerInner">
-        <nav id="nino-navbar" class="navbar navbar-default" role="navigation">
+        <nav id="nino-navbar" class="navbar navbar-default" role="navigation" style="-webkit-box-shadow:0 0 3px #17162F">
             <div class="container">
 
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -323,7 +324,7 @@ socketNTF.on('notification', function(notification){
                                     <ul ng-repeat="ntf in main.arrntf track by $index">
                                       <li>
                                         {{ntf.actionusername}} {{ntf.ntftext}}
-                                      </li>
+                                      </li>d
                                   </ul>
                                 </div>
                               <div class="seeAll"><a href="#">See All</a></div>
@@ -336,65 +337,7 @@ socketNTF.on('notification', function(notification){
             </div><!-- /.container-fluid -->
         </nav>
 
-        <section id="nino-slider" class="carousel slide container" data-ride="carousel">
 
-            <!-- Wrapper for slides  -->
-            <!-- for carousel-inner we need to modify the height for mobile -->
-            <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <h2 class="nino-sectionHeading">
-                        <span class="nino-subHeading">ស្វាគមន៍មកកាន់តុមូល</span>
-                        <span class="nino-subHeading">Create Connection</span>
-                    </h2>
-                    <a href="#" class="nino-btn">ចែករំលែក</a>
-                </div>
-                <div class="item">
-                    <h2 class="nino-sectionHeading">
-                        <span class="nino-subHeading">Ask for Information</span>
-                        <span class="nino-subHeading">Welcome to Togmol</span>
-                    </h2>
-                    <a href="#" class="nino-btn">Learn more</a>
-                </div>
-                <div class="item">
-                    <h2 class="nino-sectionHeading">
-                        <span class="nino-subHeading">Help People Anytime</span>
-                        <span class="nino-subHeading">ស្វាគមន៍មកកាន់តុមូល</span>
-                    </h2>
-                    <a href="#" class="nino-btn">Learn more</a>
-                </div>
-                <div class="item">
-                    <h2 class="nino-sectionHeading">
-                        <span class="nino-subHeading">Ask Me!</span>
-                        <span class="nino-subHeading">Welcome to Togmol</span>
-                    </h2>
-                    <a href="#" class="nino-btn">Learn more</a>
-                </div>
-            </div>
-
-            <!-- Indicators -->
-            <ol class="carousel-indicators clearfix">
-                <li data-target="#nino-slider" data-slide-to="0" class="active">
-                    <div class="inner">
-                        <span class="number">01</span> intro
-                    </div>
-                </li>
-                <li data-target="#nino-slider" data-slide-to="1">
-                    <div class="inner">
-                        <span class="number">02</span> work
-                    </div>
-                </li>
-                <li data-target="#nino-slider" data-slide-to="2">
-                    <div class="inner">
-                        <span class="number">03</span> about
-                    </div>
-                </li>
-                <li data-target="#nino-slider" data-slide-to="3">
-                    <div class="inner">
-                        <span class="number">04</span> contacts
-                    </div>
-                </li>
-            </ol>
-        </section>
     </div>
 </header><!--/#header-->
 

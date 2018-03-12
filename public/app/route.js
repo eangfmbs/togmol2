@@ -4,7 +4,8 @@ var app = angular.module('appRoutes', ['ngRoute'])
         .when('/', { //maybe i need to put token here too to know what is this account belongs
             templateUrl: '/app/views/pages/home.html',
             controller: 'mainCtrl',
-            controllerAs: 'main'
+            controllerAs: 'main',
+            title: 'togmol'
             // authenticated: false //when put this it makes 'click on home won't work anymore'
         })
 
@@ -26,6 +27,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
             templateUrl: '/app/views/pages/profile.html',
             controller: 'profileCtrl',
             controllerAs: 'profile',
+            title: 'Profile',
             authenticated: true
         })
         .when('/updateprofile', {
@@ -106,12 +108,14 @@ var app = angular.module('appRoutes', ['ngRoute'])
           templateUrl: '/app/views/pages/sharequestion.html',
           controller: 'askCtrl',
           controllerAs: 'ask',
+          title: 'Share Question',
           authenticated: true
         })
         .when('/talk/:id', {
           templateUrl: '/app/views/pages/talk.html',
           controller: 'talkCtrl',
           controllerAs: 'talk',
+          title: 'talk',
           authenticated: true
         })
         .when('/updatetalk/:id', {
@@ -127,10 +131,21 @@ var app = angular.module('appRoutes', ['ngRoute'])
     })
 });
 
+// app.factory('Title', function(){
+//   var title = 'togmol';
+//   return {
+//     title: function() { return title; },
+//     setTitle: function(newTitle) { title = newTitle; }
+//   };
+// })
+
 // add some code to check the role on each route
 
 app.run(['$rootScope', 'Auth', '$location', 'User', function ($rootScope, Auth, $location, User) {
-    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+    $rootScope.$on('$routeChangeSuccess', function (event, next, current) {
+      // $rootScope.title = next.$$route.title;
+      $rootScope.title= angular.isUndefined( next.$$route.title ) ? 'MyApp' : next.$$route.title;
+      console.log('the location:',$location.$$path)
         // if(next.$$route.authenticated == true){
         //     if(!Auth.isLoggedIn()){
         //         event.preventDefault();

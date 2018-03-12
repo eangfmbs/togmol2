@@ -159,6 +159,10 @@ angular.module('userServices',[])
     userFactory.updateNtfIsView = function(){
       return $http.get('/api/updatentfisview');
     }
+    //User.updateUserCollectingScore in statusCtrl
+    userFactory.updateUserCollectingScore = function(ownercomment) {
+      return $http.get('/api/updateusercollectingscore', ownercomment)
+    }
 
     //User.updateProfilePhoto(imageCrop)
     userFactory.updateProfilePhoto = function(croppedPhoto){

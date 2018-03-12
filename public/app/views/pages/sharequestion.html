@@ -2,11 +2,14 @@
 
   <div class="col-lg-7 col-sm-6">
 
-          <div class="card hovercard">
-              <div class="cardheader">
+          <div>
+              <div>
 
               </div>
-              <div class="avatar">
+              <div>
+
+
+
                   <!-- <img alt="" src="https://lh3.googleusercontent.com/-7u4lQZKPLao/AAAAAAAAAAI/AAAAAAAAZVw/5Caf-jo14f4/photo.jpg?sz=328"> -->
   <!-- profile image -->
               <!-- drop box -->
@@ -26,18 +29,19 @@
         <img class="photo-img"
           ng-src="{{croppedPhoto}}">
       </div> -->
-<div><img ng-src="{{croppedPhoto}}" /></div>
+<!-- <div><img ng-src="{{croppedPhoto}}" /></div> -->
       <!--progress-->
       <!-- <div class="drop-box-container" ng-show="loading" ng-cloak="">
         <div class="wrap">
           <md-progress-circular class="md-hue-2" ng-show="!loading" md-mode="indeterminate" style="margin: auto;">
           </md-progress-circular>
         </div>
+        http://embed.plnkr.co/26fh0P/ link for upload
       </div> -->
       <!--Img Crop-->
     <img-crop ng-show="uploadPhoto && !loading && !profile.photo" image="uploadPhoto"
       result-image="croppedPhoto"
-      area-type="square" ngf-accept="'image/*'" result-image-size="500"
+      area-type="square" ngf-accept="'image/*'" result-image-size="600"
       class="drop-box-container" ng-cloak="">
     </img-crop>
     <!--Save-->
@@ -58,14 +62,6 @@
   <!--end profile -->
 
               </div><br />
-              <div class="info">
-                  <div class="title">
-                      {{username}}
-                  </div>
-                  <div class="desc"><a href="/updateprofile">update profile</a></div>
-                  <div class="desc">Curious developer</div>
-                  <div class="desc">Tech geek</div>
-              </div>
               <div class="bottom">
                   <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
                       <i class="fa fa-twitter"></i>
@@ -94,18 +90,18 @@
       <div style="padding:20px 20px 0 20px">
         <md-input-container class="md-block">
               <label>អ្នកគិតយ៉ាងណាដែរ..</label>
+              <div class="photo-shadow" ng-show="photo" ng-cloak="">
+                <img class="photo-img"
+                  ng-src="{{croppedPhoto}}">
+              </div>
               <textarea  name="comment"
                ng-model = talk.commentData.comment
                maxlength="2000"
                rows="4"
                md-select-on-focus>
-
              </textarea>
              <!-- current user photo -->
-             <div class="photo-shadow" ng-show="photo" ng-cloak="">
-               <img class="photo-img"
-                 ng-src="{{croppedPhoto}}">
-             </div>
+
         </md-input-container>
 
 
